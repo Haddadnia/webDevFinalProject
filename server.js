@@ -2,15 +2,34 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var multer = require('multer');
+var passport = require('passport');
+var localStrategy = require('passport-local').Strategy;
 
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer());
+app.use(passport.initialize());
 
-app.use(express.static(__dirname + '/public'));
+//login
+passport.use(new localStrategy(
+function (username, password, done) {
+    if (username == password) {
+        var user = { firstName: 'Alice', lastName: 'Wonderland' };
+        return done(null, user);
+    }
+    return done(null, false, { message: 'Unable to login' });
+}));
+
+app.post("/login", passport.authenticate('local'), function (req, res) {
+    console.log("/login");
+    console.log(req.body);
+});
 
 
-var chair1 = {picture: "pic", name: "throne", description: "Sit here if you da king"};
+///////////////////////////////
+
+var chair1 = { picture: "pic", name: "throne", description: "Sit here if you da king" };
 var chair2 = { picture: "pic", name: "stool", description: "Sit here if you da fool" };
 var chair3 = { picture: "pic", name: "toadstool", description: "Sit here if you a toad" };
 

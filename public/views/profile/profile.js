@@ -12,17 +12,56 @@ app.controller("profileController", function ($scope, $http) {
     });
     //just temporarily getting user1
     $http.get("/user/0").success(function (response) {
+        console.log(response);
         $scope.signedInUser = response;
     });
 
+    $scope.activeUserCopy = null;
 
     $scope.editProfile = function () {
+
+        $scope.activeUserCopy = {
+            firstName: $scope.signedInUser.firstName,
+            lastName: $scope.signedInUser.lastName,
+            email: $scope.signedInUser.email,
+            password: $scope.signedInUser.password
+        };
         $scope.updatedUser = {
-            firstName: signedInUser.firstName,
-            lastName: signedInUser.lastName,
-            email: signedInUser.email,
-            password: signedInUser.password
+            firstName: $scope.signedInUser.firstName,
+            lastName: $scope.signedInUser.lastName,
+            email: $scope.signedInUser.email,
+            password: $scope.signedInUser.password
         }
+
+    }
+
+    $scope.editUserCancelled = function () {
+        $scope.signedInUser = $scope.activeUserCopy;
+        $scope.activeCourseCopy = null;
+    }
+
+    $scope.updateUser = function (updatedUser) {
+
+        //console.log(newCourse);
+        $scope.signedInUser = {
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
+            email: updatedUser.email,
+            password: updatedUser.password
+        }
+        //console.log(newCourse.index) //index here is undefined...
+
+        //TODO update on the server as well
+        /*
+            $http.put("/course/" + $scope.selectedIndex, course)
+            .success(function (response) {
+                $scope.courses = response;
+            });
+            $scope.selectedIndex = null;
+            }
+            */
+        
+
     }
 
 

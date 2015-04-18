@@ -23,7 +23,7 @@ var users = [user1, user2];
 var chairs = [chair1, chair2, chair3];
 
 
-
+//Chair stuff
 app.get('/chair', function (req, res) {
     res.json(chairs);
 });
@@ -52,7 +52,34 @@ app.put('/chair/:index', function (req, res) {
     res.json(chairs);
 });
 
+//User stuff
+app.get('/user', function (req, res) {
+    res.json(users);
+});
 
+app.get('/user/:index', function (req, res) {
+    var index = req.params['index'];
+    res.json(users[index]);
+});
+
+app.delete('/user/:index', function (req, res) {
+    var index = req.params['index'];
+    users.splice(index, 1);
+    res.json(users);
+});
+
+app.post('/user', function (req, res) {
+    var newUser = req.body;
+    users.push(newUser);
+    res.json(users);
+});
+
+app.put('/user/:index', function (req, res) {
+    var index = req.params['index'];
+    var updatedUser = req.body;
+    users[index] = updatedUser;
+    res.json(users);
+});
 
 
 

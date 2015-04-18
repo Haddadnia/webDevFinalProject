@@ -17,7 +17,7 @@ var chair3 = { picture: "pic", name: "toadstool", description: "Sit here if you 
 var user1FavoriteChairs = [chair1, chair2];
 
 var user1 = {firstName: "John", lastName: "Doe", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs:user1FavoriteChairs};
-var user1 = {firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs:chair1};
+var user2 = {firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs:chair1};
 
 var users = [user1, user2];
 var chairs = [chair1, chair2, chair3];
@@ -25,6 +25,7 @@ var chairs = [chair1, chair2, chair3];
 
 //Chair stuff
 app.get('/chair', function (req, res) {
+    console.log("testttt");
     res.json(chairs);
 });
 
@@ -81,10 +82,10 @@ app.put('/user/:index', function (req, res) {
     res.json(users);
 });
 
+app.get('/', function (req, res) {
+    res.sendfile('./public/views/profile');
 
-
-
-
+});
 
 
 var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';

@@ -16,8 +16,8 @@ var chair3 = { picture: "pic", name: "toadstool", description: "Sit here if you 
 
 var user1FavoriteChairs = [chair1, chair2];
 
-var user1 = {firstName: "John", lastName: "Doe", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs:user1FavoriteChairs};
-var user2 = {firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs:chair1};
+var user1 = {firstName: "John", lastName: "Doe", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs:user1FavoriteChairs, favoriteUsers:user2};
+var user2 = {firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs:chair1, favoriteUsers: [user1,user2]};
 
 var users = [user1, user2];
 var chairs = [chair1, chair2, chair3];
@@ -89,6 +89,6 @@ app.get('/', function (req, res) {
 
 
 var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
-var port = process.env.OPENSHIFT_NODEJS_PORT || 80;
+var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
 
 app.listen(port, ip);

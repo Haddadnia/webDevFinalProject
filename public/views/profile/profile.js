@@ -4,7 +4,6 @@
 app.controller("profileController", function ($scope, $http) {
 
     $http.get("/chair").success(function (response) {
-
         console.log("test");
         $scope.chairs = response;
     });

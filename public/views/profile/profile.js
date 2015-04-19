@@ -53,16 +53,16 @@ app.controller("profileController", function ($scope, $http) {
 
         //!!!!!
         ////////////////////////////////////////////
-        //TODO update on the server as well
+        //TODO update on the user not just user 0
 
-        /*
-            $http.put("/course/" + $scope.selectedIndex, course)
+        
+            $http.put("/user/" + 0, updatedUser)
             .success(function (response) {
-                $scope.courses = response;
+                $scope.users = response;
             });
             $scope.selectedIndex = null;
-            }
-            */
+            
+            
         
 
     }

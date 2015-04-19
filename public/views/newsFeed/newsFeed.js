@@ -6,31 +6,47 @@ app.controller("newsFeedController", function ($scope, $http) {
 
     $http.get("/user").success(function (response) {
 
-        console.log(response);
-
         $scope.users = response;
         $scope.signedInUser = $scope.users[0];
-
         $scope.chairs = [];
 
-
-
-        console.log($scope.users.length);
         for (i=0; i< $scope.users.length; i++) {
-            
-            console.log($scope.users[i]);
-            console.log($scope.users[i].chairs.length);
             for (j = 0; j < $scope.users[i].chairs.length; j++) {
-                
-                console.log($scope.users[i].chairs[j]);
                 $scope.chairs.push($scope.users[i].chairs[j]);
-                console.log($scope.chairs);
             }
         }
-        console.log($scope.chairs);
+
     });
 
+    /////////////////// ADD CHAIR TO FAVORITES
+    $scope.selectedFavoriteIndex = -1;
+    $scope.favoriteChairPressed = function (index) {
+        $scope.selectedFavoriteIndex = index;
+        console.log(index);
+    }
 
+    $scope.favoriteChair = function () {
+        //update user
+
+        console.log("favorite chairs");
+        console.log($scope.signedInUser.favoriteChairs);
+        console.log("chair being added");
+        console.log($scope.chairs[$scope.selectedFavoriteIndex]);
+        $scope.signedInUser.favoriteChairs.push($scope.chairs[$scope.selectedFavoriteIndex]);
+        //TODO acgually update correct signed in user
+        if ($scope.selectedFavoriteIndex != -1) {
+            $http.put("/user/" + 0, $scope.signedInUser).success(function (response) {
+                console.log(response);
+                console.log("response^^^");
+                $scope.users = response;
+            });
+        }
+        $scope.selectedFavoriteIndex = -1;
+    }
+
+    $scope.favoriteChairCancelled = function () {
+        $scope.selectedFavoriteIndex = -1;
+    }
 
 
 });

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://localhost/test');
+var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/test';
+var db = mongoose.connect(connectionString);
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -172,3 +173,13 @@ var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
 
 app.listen(port, ip);
+
+/*
+MongoDB 2.4 database added.  Please make note of these credentials:
+
+   Root User:     admin
+   Root Password: PX5V9w__C9lq
+   Database Name: bentsonhaddadniafinalproject
+
+Connection URL: mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/
+*/

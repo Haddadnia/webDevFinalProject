@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="chair in chairs">
-                            <td>{{chair.name}}</td>
+                            <td><a ng-click="chairSelected($index)" >{{chair.name}}</a></td>
                             <td>{{chair.description}}</td>
                             <td>{{chair.picture}}</td>
                             <td><button ng-click="favoriteChairPressed($index)" data-target="#addToFavoriteConfirmModal" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-warning pull-right">

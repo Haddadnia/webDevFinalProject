@@ -1,4 +1,5 @@
-﻿app.controller("newsFeedController", function ($scope, $http) {
+﻿app.controller("newsFeedController", function ($scope, $http, $location, $rootScope) {
+
 
 
     $http.get("/user").success(function (response) {
@@ -15,6 +16,12 @@
 
     });
 
+    $scope.chairSelected = function (index) {
+        $rootScope.currentChair = $scope.chairs[index];
+        $location.url('/chair');
+    }
+
+
     /////////////////// ADD CHAIR TO FAVORITES
     $scope.selectedFavoriteIndex = -1;
     $scope.favoriteChairPressed = function (index) {
@@ -25,10 +32,6 @@
     $scope.favoriteChair = function () {
         //update user
 
-        console.log("favorite chairs");
-        console.log($scope.signedInUser.favoriteChairs);
-        console.log("chair being added");
-        console.log($scope.chairs[$scope.selectedFavoriteIndex]);
         $scope.signedInUser.favoriteChairs.push($scope.chairs[$scope.selectedFavoriteIndex]);
         //TODO acgually update correct signed in user
         if ($scope.selectedFavoriteIndex != -1) {

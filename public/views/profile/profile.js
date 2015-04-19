@@ -1,4 +1,4 @@
-﻿app.controller("profileController", function ($scope, $http) {
+﻿app.controller("profileController", function ($scope, $http, $rootScope, $location) {
 
     
     $http.get("/user").success(function (response) {
@@ -139,6 +139,23 @@
     $scope.removeUserCancelled = function () {
         $scope.selectedDeleteIndexUser = -1;
         console.log($scope.selectedDeleteIndexUser);
+    }
+
+
+    //chair selected
+    $scope.chairSelectedMyChair = function (index) {
+
+        console.log("chair selected");
+
+        $rootScope.currentChair = $scope.signedInUser.chairs[index];
+        $location.url('/chair');
+    }
+    $scope.chairSelectedFavorite = function (index) {
+
+        console.log("chair selected fav");
+
+        $rootScope.currentChair = $scope.signedInUser.favoriteChairs[index];
+        $location.url('/chair');
     }
 
 

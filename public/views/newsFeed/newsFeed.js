@@ -16,6 +16,7 @@
 
     });
 
+    //chair selected
     $scope.chairSelected = function (index) {
         $rootScope.currentChair = $scope.chairs[index];
         $location.url('/chair');

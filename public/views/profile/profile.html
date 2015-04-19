@@ -152,7 +152,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="chair in signedInUser.chairs">
-                        <td>{{chair.name}}</td>
+                        <td><a ng-click="chairSelectedMyChair($index)">{{chair.name}}</a></td>
                         <td>{{chair.description}}</td>
                         <td>{{chair.picture}}</td>
                         <td>
@@ -183,7 +183,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="chair in signedInUser.favoriteChairs">
-                            <td>{{chair.name}}</td>
+                            <td><a ng-click="chairSelectedFavorite($index)">{{chair.name}}</a></td>
                             <td>{{chair.description}}</td>
                             <td>{{chair.picture}}</td>
                             <td><button ng-click="deleteChairFavoritePressed($index)" data-target="#deleteFavoriteModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">

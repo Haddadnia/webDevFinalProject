@@ -42,6 +42,7 @@ app.controller("profileController", function ($scope, $http) {
 
     $scope.updateUser = function (updatedUser) {
 
+        console.log(updatedUser);
         //console.log(newCourse);
         $scope.signedInUser = {
             firstName: updatedUser.firstName,
@@ -49,9 +50,11 @@ app.controller("profileController", function ($scope, $http) {
             email: updatedUser.email,
             password: updatedUser.password
         }
-        //console.log(newCourse.index) //index here is undefined...
 
+        //!!!!!
+        ////////////////////////////////////////////
         //TODO update on the server as well
+
         /*
             $http.put("/course/" + $scope.selectedIndex, course)
             .success(function (response) {

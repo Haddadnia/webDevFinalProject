@@ -41,8 +41,8 @@ var user2 = {firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com"
 var users = [user1, user2];
 var chairs = [chair1, chair2, chair3];
 
-
-//Chair stuff
+    
+///////////////////Chair stuff
 app.get('/chair', function (req, res) {
     console.log("testttt");
     res.json(chairs);
@@ -72,7 +72,7 @@ app.put('/chair/:index', function (req, res) {
     res.json(chairs);
 });
 
-//User stuff
+/////////////////////User stuff
 app.get('/user', function (req, res) {
     res.json(users);
 });

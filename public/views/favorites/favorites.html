@@ -78,7 +78,7 @@
                 </div>
             <div class="modal-footer" >
                 <button ng-click="removeUser()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button ng-click="removeUserCancelled()" type="button" class="btn btn-default" data-dismiss="modal">No</button>
             </div>
         </div>
        </div>
@@ -129,7 +129,7 @@
                         <tr ng-repeat="user in signedInUser.favoriteUsers">
                             <td>{{user.firstName}}</td>
                             <td>{{user.lastName}}</td>
-                            <td><button data-target="#deleteConfirmModalUser" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
+                            <td><button ng-click="deleteUserPressed($index)" data-target="#deleteConfirmModalUser" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button></td>
                         </tr>

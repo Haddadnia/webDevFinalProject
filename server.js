@@ -35,11 +35,11 @@ var chair3 = { picture: "pic", name: "toadstool", description: "Sit here if you 
 
 var user1FavoriteChairs = [chair1, chair2, chair3];
 
+var user3 = { firstName: "Johnny3", lastName: "Doey3", email: "3jdoe@chariMecca.com", password: "howdy3", favoriteChairs: chair1 };
+var user2 = {firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com", password: "howdy2", favoriteChairs:chair1};
+var user1 = { firstName: "John", lastName: "Doe", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs: user1FavoriteChairs, favoriteUsers: [user2,user3] };
 
-var user2 = {firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs:chair1, favoriteUsers: null};
-var user1 = { firstName: "John", lastName: "Doe", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs: user1FavoriteChairs, favoriteUsers: user2 };
-
-var users = [user1, user2];
+var users = [user1, user2, user3];
 var chairs = [chair1, chair2, chair3];
 
     

@@ -8,6 +8,8 @@ app.controller("favoritesController", function ($scope, $http) {
         $scope.users = response;
         console.log(response);
         $scope.signedInUser = $scope.users[0];
+
+        console.log($scope.signedInUser.favoriteUsers);
     });
 
 
@@ -57,12 +59,31 @@ app.controller("favoritesController", function ($scope, $http) {
 
    ////USER STUFF TO COME
 
+    $scope.selectedDeleteIndexUser = -1;
+    $scope.deleteUserPressed = function (index) {
+        $scope.selectedDeleteIndexUser = index;
+    }
+
     $scope.removeUser = function () {
-        var index = $('#deleteIndexUser').attr('index')
-        $http.delete("/user/" + index)
-        .success(function (response) {
-            $scope.favoriteUsers = response;
-        });
+        //update user
+
+        $scope.signedInUser.favoriteUsers.splice($scope.selectedDeleteIndexUser, 1);
+
+
+
+        //TODO acgually update correct signed in user
+        if ($scope.selectedDeleteIndexUser != -1) {
+            $http.put("/user/" + 0, $scope.signedInUser).success(function (response) {
+                console.log(response);
+                $scope.users = response;
+            });
+        }
+        $scope.selectedDeleteIndexUser = -1;
+    }
+
+    $scope.removeUserCancelled = function () {
+        $scope.selectedDeleteIndexUser = -1;
+        console.log($scope.selectedDeleteIndexUser);
     }
 
 

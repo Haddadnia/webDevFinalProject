@@ -59,7 +59,7 @@ app.controller("profileController", function ($scope, $http) {
         //!!!!!
         ////////////////////////////////////////////
         //TODO update on the user not just user 0
-            $http.put("/user/" + 0, updatedUser)
+            $http.put("/user/" + 0, $scope.signedInUser)
             .success(function (response) {
                 $scope.users = response;
             });

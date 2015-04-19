@@ -43,6 +43,7 @@
     <main>
 
 
+
          <!-- edit profile modal -->
     <div id="editProfileModal" class="modal fade clearfix" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -79,9 +80,31 @@
        </div>
      </div>
 
+    <!-- delete confirm modal chair-->
+    <div id="deleteConfirmModalChair" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+            <div class="modal-body">
+                <p>Press Yes to remove the chair from your portfolio, press No to cancel</p>
+            </div>
+                <div hidden="hidden" id="deleteIndexChair" index>
+                </div>
+            <div class="modal-footer" >
+                <button ng-click="removeChair()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
+                <button ng-click="removeChairCancelled()" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+       </div>
+     </div>
+
 
     <!-- profile stuff -->
           <div class="page-header container"><h1>Profile</h1></div>
+            <div class="container">
                 <div class="container">
                     <div class="form-group row">
                             <div class="col-sm-2"><label class="field-label">First Name</label></div>
@@ -108,7 +131,31 @@
                         </div>
                     </div>
                 </div>
+              </div>
 
+       <!-- My chairs -->
+        <div class="page-header container"><h1>My Chairs</h1></div>
+            <div class="container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Chair</th>
+                            <th>Description</th>
+                            <th>Picture</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="chair in signedInUser.chairs">
+                            <td>{{chair.name}}</td>
+                            <td>{{chair.description}}</td>
+                            <td>{{chair.picture}}</td>
+                            <td><button ng-click="deleteChairPressed($index)" data-target="#deleteConfirmModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+           </div>
 
         </main>
 </body>

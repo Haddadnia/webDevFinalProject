@@ -28,7 +28,7 @@ app.controller("favoritesController", function ($scope, $http) {
     });
     */
 
-    /// delete chair from favorites
+    /// REMOVE CHAIR
     $scope.selectedDeleteIndex = -1;
     $scope.deleteChairPressed = function (index) {
         console.log(index);
@@ -39,9 +39,6 @@ app.controller("favoritesController", function ($scope, $http) {
         //update user
 
         $scope.signedInUser.favoriteChairs.splice($scope.selectedDeleteIndex,1);
-        
-
-
         //TODO acgually update correct signed in user
         if ($scope.selectedDeleteIndex != -1) {
             $http.put("/user/" + 0, $scope.signedInUser).success(function (response) {
@@ -57,7 +54,7 @@ app.controller("favoritesController", function ($scope, $http) {
         console.log($scope.selectedDeleteIndex);
     }
 
-   ////USER STUFF TO COME
+   ////////////////REMOVE USER 
 
     $scope.selectedDeleteIndexUser = -1;
     $scope.deleteUserPressed = function (index) {
@@ -66,11 +63,7 @@ app.controller("favoritesController", function ($scope, $http) {
 
     $scope.removeUser = function () {
         //update user
-
         $scope.signedInUser.favoriteUsers.splice($scope.selectedDeleteIndexUser, 1);
-
-
-
         //TODO acgually update correct signed in user
         if ($scope.selectedDeleteIndexUser != -1) {
             $http.put("/user/" + 0, $scope.signedInUser).success(function (response) {
@@ -85,8 +78,5 @@ app.controller("favoritesController", function ($scope, $http) {
         $scope.selectedDeleteIndexUser = -1;
         console.log($scope.selectedDeleteIndexUser);
     }
-
-
-
 
 });

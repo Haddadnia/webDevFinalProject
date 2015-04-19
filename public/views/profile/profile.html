@@ -64,6 +64,48 @@
             </div>
         </div>
 
+                    <!-- delete confirm modal chairs-->
+    <div id="deleteFavoriteModalChair" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+            <div class="modal-body">
+                <p>Press Yes to remove the chair from your favorites, press No to cancel</p>
+            </div>
+                <div hidden="hidden" id="Div2" index>
+                </div>
+            <div class="modal-footer" >
+                <button ng-click="removeChair()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
+                <button ng-click="removeChairCancelled()" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+       </div>
+     </div>
+
+    <!-- delete confirm modal user-->
+    <div id="deleteConfirmModalUser" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+            <div class="modal-body">
+                <p>Press Yes to remove the user from your favorites, press No to cancel</p>
+            </div>
+                <div hidden="hidden" id="deleteIndexUser" index>
+                </div>
+            <div class="modal-footer" >
+                <button ng-click="removeUser()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
+                <button ng-click="removeUserCancelled()" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+       </div>
+     </div>
+
 
         <!-- profile stuff -->
         <div class="page-header container"><h1>Profile</h1></div>
@@ -122,6 +164,57 @@
                 </tbody>
             </table>
         </div>
+
+
+
+        <!-- ---------------------------------------------------------- -->
+
+
+        <!-- favorite chairs -->
+        <div class="page-header container"><h1>Favorite Chairs</h1></div>
+            <div class="container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Chair</th>
+                            <th>Description</th>
+                            <th>Picture</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="chair in signedInUser.favoriteChairs">
+                            <td>{{chair.name}}</td>
+                            <td>{{chair.description}}</td>
+                            <td>{{chair.picture}}</td>
+                            <td><button ng-click="deleteChairPressed($index)" data-target="#deleteFavoriteModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+           </div>
+
+        <!-- favorite users-->
+        <div class="page-header container"><h1>Favorite Users</h1></div>
+            <div class="container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in signedInUser.favoriteUsers">
+                            <td>{{user.firstName}}</td>
+                            <td>{{user.lastName}}</td>
+                            <td><button ng-click="deleteUserPressed($index)" data-target="#deleteConfirmModalUser" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+           </div>
 
     </main>
 </body>

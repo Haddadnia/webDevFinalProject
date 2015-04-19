@@ -103,6 +103,7 @@ var user2 = { firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com
 var user1 = { firstName: "John", lastName: "Doe", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs: user1FavoriteChairs, favoriteUsers: [user2, user3], chairs: [chair1, chair2, chair3] };
 
 var users = [user1, user2, user3];
+var chairs = [chair1, chair2, chair3];
 
     
 ///////////////////Chair stuff

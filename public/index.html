@@ -11,9 +11,13 @@
     <script src="views/login/login.js"></script>
     <script src="views/registration/registration.js"></script>
     <script src="views/profile/profile.js"></script>
-    <link rel="stylesheet" href="views/profile/profile.css" />
-    <link rel="stylesheet" href="views/newsFeed/newsFeed.css" />
     <script src="views/newsFeed/newsFeed.js"></script>
+    <script src="views/chair/chair.js"></script>
+    <style>
+        #routingView {
+            padding:70px;
+        }
+    </style>
 </head>
 <body ng-app="Passport">
     <nav ng-controller="NavCtrl">
@@ -42,7 +46,7 @@
             </div>
         </nav>
     </nav>
-    <div ng-view>
+    <div ng-view id="routingView">
 
     </div>
 </body>

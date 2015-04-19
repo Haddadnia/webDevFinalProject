@@ -34,20 +34,19 @@ var chair2 = { picture: "pic", name: "stool", description: "Sit here if you da f
 var chair3 = { picture: "pic", name: "toadstool", description: "Sit here if you a toad" };
 var chair4 = { picture: "pic", name: "stoolToad", description: "poop here if you a toad" };
 var chair5 = { picture: "pic", name: "hovel", description: "squat here if you toadless" };
+var chair6 = { picture: "pic", name: "bed", description: "lie here if you tired" };
 
 var user1FavoriteChairs = [chair1, chair2, chair3];
 
-var user3 = { firstName: "Johnny3", lastName: "Doey3", email: "3jdoe@chariMecca.com", password: "howdy3", favoriteChairs: chair1, chairs:[chair1, chair2]};
-var user2 = { firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com", password: "howdy2", favoriteChairs: chair1, chairs: [chair1, chair2] };
-var user1 = { firstName: "John", lastName: "Doe", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs: user1FavoriteChairs, favoriteUsers: [user2, user3], chairs: [chair1, chair2, chair3, chair4] };
+var user3 = { firstName: "Johnny3", lastName: "Doey3", email: "3jdoe@chariMecca.com", password: "howdy3", favoriteChairs: chair1, chairs:[chair5, chair6]};
+var user2 = { firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com", password: "howdy2", favoriteChairs: chair1, chairs: chair4 };
+var user1 = { firstName: "John", lastName: "Doe", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs: user1FavoriteChairs, favoriteUsers: [user2, user3], chairs: [chair1, chair2, chair3] };
 
 var users = [user1, user2, user3];
-var chairs = [user1.chairs, user2.chairs, user3.chairs];
 
     
 ///////////////////Chair stuff
 app.get('/chair', function (req, res) {
-    console.log("testttt");
     res.json(chairs);
 });
 

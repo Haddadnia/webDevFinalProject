@@ -92,12 +92,12 @@
 
     /// REMOVE CHAIR FAVORITE
     $scope.selectedDeleteIndexFavoriteChair = -1;
-    $scope.deleteChairPressed = function (index) {
+    $scope.deleteChairFavoritePressed = function (index) {
         console.log(index);
         $scope.selectedDeleteIndexFavoriteChair = index;
     }
 
-    $scope.removeChair = function () {
+    $scope.removeChairFavorite = function () {
         //update user
 
         $scope.signedInUser.favoriteChairs.splice($scope.selectedDeleteIndexFavoriteChair, 1);
@@ -111,7 +111,7 @@
         $scope.selectedDeleteIndexFavoriteChair = -1;
     }
 
-    $scope.removeChairCancelled = function () {
+    $scope.removeChairFavoriteCancelled = function () {
         $scope.selectedDeleteIndexFavoriteChair = -1;
         console.log($scope.selectedDeleteIndexFavoriteChair);
     }

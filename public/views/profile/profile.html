@@ -64,7 +64,7 @@
             </div>
         </div>
 
-                    <!-- delete confirm modal chairs-->
+                    <!-- delete confirm modal chairs Favorite-->
     <div id="deleteFavoriteModalChair" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -78,8 +78,8 @@
                 <div hidden="hidden" id="Div2" index>
                 </div>
             <div class="modal-footer" >
-                <button ng-click="removeChair()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
-                <button ng-click="removeChairCancelled()" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button ng-click="removeChairFavorite()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
+                <button ng-click="removeChairFavoriteCancelled()" type="button" class="btn btn-default" data-dismiss="modal">No</button>
             </div>
         </div>
        </div>
@@ -186,7 +186,7 @@
                             <td>{{chair.name}}</td>
                             <td>{{chair.description}}</td>
                             <td>{{chair.picture}}</td>
-                            <td><button ng-click="deleteChairPressed($index)" data-target="#deleteFavoriteModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
+                            <td><button ng-click="deleteChairFavoritePressed($index)" data-target="#deleteFavoriteModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button></td>
                         </tr>

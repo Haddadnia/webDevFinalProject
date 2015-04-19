@@ -1,12 +1,6 @@
-﻿var app = angular.module("profile", [])
+﻿app.controller("profileController", function ($scope, $http) {
 
-
-app.controller("profileController", function ($scope, $http) {
-
-    $http.get("/chair").success(function (response) {
-        console.log("test");
-        $scope.chairs = response;
-    });
+    
     $http.get("/user").success(function (response) {
         $scope.users = response;
     });

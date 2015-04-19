@@ -1,31 +1,90 @@
+var mongoose = require('mongoose');
+var db = mongoose.connect('mongodb://localhost/test');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var passport = require('passport');
-var localStrategy = require('passport-local').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer());
+
+
+app.use(cookieParser());
+app.use(session({ secret: 'this is the secret' }));
 app.use(passport.initialize());
+app.use(passport.session());
 
-//login
-passport.use(new localStrategy(
-function (username, password, done) {
-    if (username == password) {
-        var user = { firstName: 'Alice', lastName: 'Wonderland' };
-        return done(null, user);
-    }
-    return done(null, false, { message: 'Unable to login' });
-}));
-
-app.post("/login", passport.authenticate('local'), function (req, res) {
-    console.log("/login");
-    console.log(req.body);
+var UserSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+    email: String,
+    firstName: String,
+    lastName: String,
 });
 
+var UserModel = mongoose.model("UserModel", UserSchema);
+//var admin = new UserModel({ username: "alice", password: "alice", firstName: "Alice", lastName: "Wonderland", roles: ["admin"] });
+//var student = new UserModel({ username: "bob", password: "bob", firstName: "Bob", lastName: "Marley", roles: ["student"] });
+
+//admin.save();
+//student.save();
+//login
+passport.use(new LocalStrategy(
+function (username, password, done) {
+    UserModel.findOne({ username: username, password: password }, function (err, user) {
+        if(user)
+        {
+            return done(null, user);
+        }
+        return done(null, false, { message: 'Unable to login' });
+    });    
+}));
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
+
+app.post('/login', passport.authenticate('local'), function (req, res) {
+    res.json(req.user);
+});
+
+app.post('/register', function (req, res) {
+    UserModel.findOne({ username: req.body.username }, function (err, user) {
+        if (user) {
+            res.json(null);
+            return;
+        } else {
+            var newUser = new UserModel(req.body);
+            newUser.save(function (err, user) {
+                req.login(user, function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.json(user);
+                });
+            });
+        }
+    });
+});
+
+app.get('/loggedin', function (req, res) {
+    res.send(req.isAuthenticated() ? req.user : '0');
+});
+
+app.post('/logout', function (req, res) {
+    req.logOut();
+    res.send(200);
+});
 
 ///////////////////////////////
 

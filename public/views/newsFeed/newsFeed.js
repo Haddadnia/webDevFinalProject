@@ -1,7 +1,4 @@
-﻿var app = angular.module("newsFeed", [])
-
-
-app.controller("newsFeedController", function ($scope, $http) {
+﻿app.controller("newsFeedController", function ($scope, $http) {
 
 
     $http.get("/user").success(function (response) {

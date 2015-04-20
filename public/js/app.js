@@ -25,6 +25,10 @@ app.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'views/chair/chair.html',
             controller: 'chairController'
         })
+        .when('/userView', {
+            templateUrl: 'views/userView/userView.html',
+            controller: 'userViewController'
+        })
         .otherwise({
             redirectTo: '/newsFeed'
         });

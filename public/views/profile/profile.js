@@ -145,17 +145,19 @@
     //chair selected
     $scope.chairSelectedMyChair = function (index) {
 
-        console.log("chair selected");
-
         $rootScope.currentChair = $scope.signedInUser.chairs[index];
         $location.url('/chair');
     }
     $scope.chairSelectedFavorite = function (index) {
 
-        console.log("chair selected fav");
-
         $rootScope.currentChair = $scope.signedInUser.favoriteChairs[index];
         $location.url('/chair');
+    }
+
+    //User Selected
+    $scope.userSelected = function (index) {
+        $rootScope.currentUserView = $scope.signedInUser.favoriteUsers[index];
+        $location.url('/userView');
     }
 
 

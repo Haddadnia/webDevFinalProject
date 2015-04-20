@@ -206,7 +206,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="user in signedInUser.favoriteUsers">
-                            <td>{{user.firstName}}</td>
+                            <td><a ng-click="userSelected($index)">{{user.firstName}}</a></td>
                             <td>{{user.lastName}}</td>
                             <td><button ng-click="deleteUserPressed($index)" data-target="#deleteConfirmModalUser" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
                                 <span class="glyphicon glyphicon-remove"></span>

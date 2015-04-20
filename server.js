@@ -41,8 +41,8 @@ var ChairSchema = new mongoose.Schema({
 
 var CommentSchema = new mongoose.Schema({
     text: String,
-    user: String,
-    chair: String,});
+    user: String
+});
 
 var UserModel = mongoose.model("UserModel", UserSchema);
 var ChairModel = mongoose.model("ChairModel", UserSchema);
@@ -102,6 +102,22 @@ app.post('/logout', function (req, res) {
 
 
 
+
+
+app.get('/comment/:id', function (req, res) {
+    CommentModel.findById(req.params.id, function (err, comment) {
+        res.json(comment);
+    });
+});
+
+
+
+app.post('/comment', function (req, res) {
+    var newComment = new CommentModel(req.body);
+    newComment.save(function (err, comment) {
+        res.json(comment);
+    });
+})
 ///////////////////////////////
 
 var chair1 = { picture: "pic", name: "throne", description: "Sit here if you da king" };
@@ -132,6 +148,16 @@ app.get('/allChairs', function (req, res) {
 app.get('/chair/:id', function (req, res) {
     ChairModel.findById(req.params.id, function (err, chair) {
         res.json(chair);
+    });
+});
+
+app.put("/updateChair/:id", function (req, res) {
+    ChairModel.findById(req.params.id, function (err, chair) {
+        chair.update(req.body, function (err, count) {
+            ChairModel.findById(req.params.id, function (err, chair) {
+                res.json(chair);
+            });
+        });
     });
 });
 //// ^^data base

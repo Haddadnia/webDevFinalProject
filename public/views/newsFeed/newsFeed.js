@@ -1,7 +1,10 @@
-﻿app.controller("newsFeedController", function ($scope, $http, $location, $rootScope) {
+﻿﻿app.controller("newsFeedController", function ($scope, $http, $location, $rootScope) {
 
+    $http.get("/allChairs").success(function (chairs) {
+        $scope.chairs = chairs;
+    });
 
-
+    /*
     $http.get("/user").success(function (response) {
 
         $scope.users = response;
@@ -15,6 +18,7 @@
         }
 
     });
+    */
 
     //chair selected
     $scope.chairSelected = function (index) {
@@ -24,13 +28,20 @@
 
 
     /////////////////// ADD CHAIR TO FAVORITES
-    $scope.selectedFavoriteIndex = -1;
-    $scope.favoriteChairPressed = function (index) {
-        $scope.selectedFavoriteIndex = index;
-        console.log(index);
+    //$scope.selectedFavoriteIndex = -1;
+    $scope.favoriteChairPressed = function (id) {
+        $scope.selectedID = id;
+        console.log(id);
     }
 
     $scope.favoriteChair = function () {
+        var user = $rootScope.currentUser;
+        user.favoriteChairs.push($scope.selectedID);
+
+        $http.put('/updateUser/' + user._id, user).success(function (user) {
+            $scope.currentUser = user;
+        });
+        /*
         //update user
 
         $scope.signedInUser.favoriteChairs.push($scope.chairs[$scope.selectedFavoriteIndex]);
@@ -43,11 +54,13 @@
             });
         }
         $scope.selectedFavoriteIndex = -1;
+        */
     }
 
+    /*
     $scope.favoriteChairCancelled = function () {
         $scope.selectedFavoriteIndex = -1;
     }
-
+    */
 
 });

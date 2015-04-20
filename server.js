@@ -27,14 +27,27 @@ var UserSchema = new mongoose.Schema({
     email: String,
     firstName: String,
     lastName: String,
+    favoriteChairs: [String],
+    favoriteUsers: [String]
 });
 
-var UserModel = mongoose.model("UserModel", UserSchema);
-//var admin = new UserModel({ username: "alice", password: "alice", firstName: "Alice", lastName: "Wonderland", roles: ["admin"] });
-//var student = new UserModel({ username: "bob", password: "bob", firstName: "Bob", lastName: "Marley", roles: ["student"] });
+var ChairSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    description: String,
+    usersWhoFavorited: [String],
+    comments: [String]
+});
 
-//admin.save();
-//student.save();
+var CommentSchema = new mongoose.Schema({
+    text: String,
+    user: String,
+    chair: String,});
+
+var UserModel = mongoose.model("UserModel", UserSchema);
+var ChairModel = mongoose.model("ChairModel", UserSchema);
+var CommentModel = mongoose.model("CommentModel", UserSchema);
+
 //login
 passport.use(new LocalStrategy(
 function (username, password, done) {
@@ -43,7 +56,7 @@ function (username, password, done) {
         {
             return done(null, user);
         }
-        return done(null, false, { message: 'Unable to login' });
+                return done(null, false, { message: 'Unable to login' });
     });    
 }));
 
@@ -87,6 +100,21 @@ app.post('/logout', function (req, res) {
     res.send(200);
 });
 
+app.get('/allChairs', function (req, res) {
+    ChairModel.find(function (err, chairs) {
+        res.json(chairs);
+    });
+});
+
+app.put("/updateUser/:id", function (req, res) {
+    UserModel.findById(req.params.id, function (err, user) {
+        user.update(req.body, function (err, count) {
+            UserModel.findById(req.params.id, function (err, user) {
+                res.json(user);
+            });
+        });
+    });
+});
 ///////////////////////////////
 
 var chair1 = { picture: "pic", name: "throne", description: "Sit here if you da king" };

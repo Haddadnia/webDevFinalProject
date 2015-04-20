@@ -42,8 +42,8 @@
                         <tr ng-repeat="chair in chairs">
                             <td><a ng-click="chairSelected($index)" >{{chair.name}}</a></td>
                             <td>{{chair.description}}</td>
-                            <td>{{chair.picture}}</td>
-                            <td><button ng-click="favoriteChairPressed($index)" data-target="#addToFavoriteConfirmModal" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-warning pull-right">
+                            <td><img src="{{chair.image}}" /></td>
+                            <td ng-show="currentUser"><button ng-click="favoriteChairPressed(chair._id)" data-target="#addToFavoriteConfirmModal" data-toggle="modal" class="btn btn-warning pull-right">
                                 <span class="glyphicon glyphicon-star"></span>
                             </button></td>
                         </tr>

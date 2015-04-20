@@ -2,7 +2,7 @@
 
 app.config(function ($routeProvider, $httpProvider) {
     $routeProvider
-        .when('/newsFeed', {
+        .when('/feed', {
             templateUrl: 'views/newsFeed/newsFeed.html',
             controller: 'newsFeedController'
         })
@@ -30,7 +30,7 @@ app.config(function ($routeProvider, $httpProvider) {
             controller: 'userViewController'
         })
         .otherwise({
-            redirectTo: '/newsFeed'
+            redirectTo: '/feed'
         });
 });
 
@@ -56,12 +56,11 @@ var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope) {
     return deferred.promise;
 };
 
-
 app.controller("NavCtrl", function ($rootScope, $scope, $http, $location) {
     $scope.logout = function () {
         $http.post("/logout").success(function () {
             $rootScope.currentUser = null;
-            $location.url("/newsFeed");
+            $location.url("/feed");
         });
     }
 });

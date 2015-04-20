@@ -1,24 +1,10 @@
 ﻿﻿app.controller("newsFeedController", function ($scope, $http, $location, $rootScope) {
 
+    $scope.signedInUser = $rootScope.currentUser;
+
     $http.get("/allChairs").success(function (chairs) {
         $scope.chairs = chairs;
     });
-
-    /*
-    $http.get("/user").success(function (response) {
-
-        $scope.users = response;
-        $scope.signedInUser = $scope.users[0];
-        $scope.chairs = [];
-
-        for (i=0; i< $scope.users.length; i++) {
-            for (j = 0; j < $scope.users[i].chairs.length; j++) {
-                $scope.chairs.push($scope.users[i].chairs[j]);
-            }
-        }
-
-    });
-    */
 
     //chair selected
     $scope.chairSelected = function (index) {
@@ -35,10 +21,9 @@
     }
 
     $scope.favoriteChair = function () {
-        var user = $rootScope.currentUser;
-        user.favoriteChairs.push($scope.selectedID);
+        $scope.signedInUser.favoriteChairs.push($scope.selectedID);
 
-        $http.put('/updateUser/' + user._id, user).success(function (user) {
+        $http.put('/updateUser/' + $scope.signedInUser._id, $scope.signedInUser).success(function (user) {
             $scope.currentUser = user;
         });
         /*

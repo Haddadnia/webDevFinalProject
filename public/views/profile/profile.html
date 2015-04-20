@@ -189,15 +189,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="chair in signedInUser.chairs">
-                        <td><a ng-click="chairSelectedMyChair($index)">{{chair.name}}</a></td>
-                        <td>{{chair.description}}</td>
-                        <td>{{chair.picture}}</td>
+                    <tr ng-repeat="myChair in chairs">
+                        <td><a ng-click="chairSelectedMyChair($index)">{{myChair.name}}</a></td>
+                        <td>{{myChair.description}}</td>
+                        <td>{{myChair.picture}}</td>
                         <td>
-                            <button ng-click="deleteChairPressed($index)" data-target="#deleteConfirmModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
+                            <button ng-click="deleteChairPressed($index)" data-target="#deleteConfirmModalChair" data-toggle="modal" data-chair={{myChair}} data-index={{$index}} class="btn btn-danger pull-right">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
-                            <button ng-click="editChairPressed($index)" data-target="#editChairModal" data-toggle="modal" id="Button1" data-chair={{chair}} class="btn btn-primary pull-right">
+                            <button ng-click="editChairPressed($index)" data-target="#editChairModal" data-toggle="modal" id="Button1" data-chair={{myChair}} class="btn btn-primary pull-right">
                                 <span class="glyphicon-pencil"></span>
                             </button>
                         </td>
@@ -223,7 +223,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="chair in signedInUser.favoriteChairs">
+                        <tr ng-repeat="chair in favoriteChairs">
                             <td><a ng-click="chairSelectedFavorite($index)">{{chair.name}}</a></td>
                             <td>{{chair.description}}</td>
                             <td>{{chair.picture}}</td>
@@ -246,7 +246,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="user in signedInUser.favoriteUsers">
+                        <tr ng-repeat="user in favoriteUsers">
                             <td><a ng-click="userSelected($index)">{{user.firstName}}</a></td>
                             <td>{{user.lastName}}</td>
                             <td><button ng-click="deleteUserPressed($index)" data-target="#deleteConfirmModalUser" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">

@@ -100,21 +100,8 @@ app.post('/logout', function (req, res) {
     res.send(200);
 });
 
-app.get('/allChairs', function (req, res) {
-    ChairModel.find(function (err, chairs) {
-        res.json(chairs);
-    });
-});
 
-app.put("/updateUser/:id", function (req, res) {
-    UserModel.findById(req.params.id, function (err, user) {
-        user.update(req.body, function (err, count) {
-            UserModel.findById(req.params.id, function (err, user) {
-                res.json(user);
-            });
-        });
-    });
-});
+
 ///////////////////////////////
 
 var chair1 = { picture: "pic", name: "throne", description: "Sit here if you da king" };
@@ -135,13 +122,22 @@ var chairs = [chair1, chair2, chair3];
 
     
 ///////////////////Chair stuff
-app.get('/chair', function (req, res) {
-    res.json(chairs);
+
+app.get('/allChairs', function (req, res) {
+    ChairModel.find(function (err, chairs) {
+        res.json(chairs);
+    });
 });
 
-app.get('/chair/:index', function (req, res) {
-    var index = req.params['index'];
-    res.json(chairs[index]);
+app.get('/chair/:id', function (req, res) {
+    ChairModel.findById(req.params.id, function (err, chair) {
+        res.json(chair);
+    });
+});
+//// ^^data base
+////////////////////////////////////////
+app.get('/chair', function (req, res) {
+    res.json(chairs);
 });
 
 app.delete('/chair/:index', function (req, res) {
@@ -164,14 +160,30 @@ app.put('/chair/:index', function (req, res) {
 });
 
 /////////////////////User stuff
+
+app.put("/updateUser/:id", function (req, res) {
+    UserModel.findById(req.params.id, function (err, user) {
+        user.update(req.body, function (err, count) {
+            UserModel.findById(req.params.id, function (err, user) {
+                res.json(user);
+            });
+        });
+    });
+});
+
+app.get('/user/:id', function (req, res) {
+    UserModel.findById(req.params.id, function (err, user) {
+        res.json(user);
+    });
+
+});
+
+/////database ^^
 app.get('/user', function (req, res) {
     res.json(users);
 });
 
-app.get('/user/:index', function (req, res) {
-    var index = req.params['index'];
-    res.json(users[index]);
-});
+
 
 app.delete('/user/:index', function (req, res) {
     var index = req.params['index'];
@@ -182,13 +194,6 @@ app.delete('/user/:index', function (req, res) {
 app.post('/user', function (req, res) {
     var newUser = req.body;
     users.push(newUser);
-    res.json(users);
-});
-
-app.put('/user/:index', function (req, res) {
-    var index = req.params['index'];
-    var updatedUser = req.body;
-    users[index] = updatedUser;
     res.json(users);
 });
 

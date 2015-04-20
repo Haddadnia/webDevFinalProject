@@ -3,7 +3,7 @@
         console.log(user);
         $http.post('/login', user).success(function (response) {
             console.log(response);
-            $rootScope.currentUser = user;
+            $rootScope.currentUser = response;
             $location.url("/profile");
         });
     };

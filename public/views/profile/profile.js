@@ -160,5 +160,48 @@
         $location.url('/userView');
     }
 
+    ///// EDITING A CHAIR
+    $scope.editChairIndex = -1;
+    $scope.editChairPressed = function (index) {
+
+        $scope.editChairIndex = index;
+
+        $scope.activeChairCopy = {
+            name: $scope.signedInUser.chairs[index].name,
+            description: $scope.signedInUser.chairs[index].description,
+            pic: "pic"
+        };
+        $scope.updatedChair = {
+            name: $scope.signedInUser.chairs[index].name,
+            description: $scope.signedInUser.chairs[index].description
+        }
+    }
+
+
+    $scope.editChairCancelled = function () {
+        //$scope.signedInUser = $scope.activeUserCopy;
+        $scope.activeChairCopy = null;
+        $scope.updatedChair = null;
+        $scope.editChairIndex = -1;
+    }
+
+    $scope.updateChair = function (updatedChair) {
+
+
+        $scope.signedInUser.chairs[$scope.editChairIndex] = updatedChair;
+
+        $scope.signedInUser.chairs[$scope.editChairIndex].picture = "pic";
+
+        //!!!!!
+        ////////////////////////////////////////////
+        //TODO update on the user not just user 0
+        $http.put("/user/" + 0, $scope.signedInUser)
+        .success(function (response) {
+            $scope.users = response;
+        });
+        $scope.activeChairCopy = null;
+        $scope.updatedChair = null;
+        $scope.editChairIndex = -1;
+    }
 
 });

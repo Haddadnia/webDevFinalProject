@@ -24,8 +24,7 @@
     //User Selected
     $scope.userSelected = function (index) {
         $rootScope.currentUserView = $scope.user.favoriteUsers[index];
+        //stay on same page just change the user you're looking at
         $scope.user = $rootScope.currentUserView;
-        //TODO make it go to a different user view
-        //$location.url('/userView');
     }
 });

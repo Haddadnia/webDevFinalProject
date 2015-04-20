@@ -43,6 +43,44 @@
             </div>
         </div>
 
+
+
+
+                <!-- edit chair modal -->
+        <div id="editChairModal" class="modal fade clearfix" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="H1">Edit Chair</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="container">
+                            <div class="form-group row">
+                                <div class="col-sm-2"><label class="field-label">Name</label></div>
+                                <div class="field col-md-4 form-group"><input type="text" class="form-control" id="name" placeholder="Name" ng-model="updatedChair.name" /></div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2"><label class="field-label">Description</label></div>
+                                <div class="field col-md-4 form-group"><input type="text" class="form-control" id="description" placeholder="Description" ng-model="updatedChair.description" /></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateChair(updatedChair)">Update</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="updateChairCancelled()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
         <!-- delete confirm modal chair-->
         <div id="deleteConfirmModalChair" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog">
@@ -158,6 +196,9 @@
                         <td>
                             <button ng-click="deleteChairPressed($index)" data-target="#deleteConfirmModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
                                 <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <button ng-click="editChairPressed($index)" data-target="#editChairModal" data-toggle="modal" id="Button1" data-chair={{chair}} class="btn btn-primary pull-right">
+                                <span class="glyphicon-pencil"></span>
                             </button>
                         </td>
                     </tr>

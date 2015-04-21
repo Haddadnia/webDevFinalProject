@@ -178,11 +178,21 @@ app.delete('/chair/:id', function (req, res) {
 /////////////////////User stuff
 
 app.put("/updateUser/:id", function (req, res) {
+    /*
     UserModel.findById(req.params.id, function (err, user) {
         user.update(req.body, function (err, count) {
             UserModel.findById(req.params.id, function (err, user) {
                 res.json(user);
             });
+        });
+    });
+    */
+    var id = req.params.id;
+    UserModel.remove({ _id: id }, function (err, count) {
+        var newUser = new UserModel(req.body);
+        newUser._id = id;
+        newUser.save(function (err, user) {
+            res.json(user);
         });
     });
 });

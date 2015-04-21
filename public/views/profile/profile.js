@@ -34,59 +34,9 @@
     createMyChairsTable();
     createFavoriteChairsTable();
     createFavoriteUsersTable();
-    /*
-updateTables = function () {
-        $scope.signedInUser = $rootScope.currentUser;
-        $scope.chairs = [];
-        $scope.favoriteUsers = [];
-        $scope.favoriteChairs = [];
-        //get my chairs, fav chairs, and fav users
-        if ($scope.signedInUser.chairs) {
-            for (i = 0; i < $scope.signedInUser.chairs.length ; i++) {
-                $http.get("/chair/" + $scope.signedInUser.chairs[i]).success(function (response) {
-                    $scope.chairs.push(response);
-                });
-            }
 
-        }
-        if ($scope.signedInUser.favoriteChairs) {
-            for (i = 0; i < $scope.signedInUser.favoriteChairs.length; i++) {
-                $http.get("/chair/" + $scope.signedInUser.favoriteChairs[i]).success(function (response) {
-                    $scope.favoriteChairs.push(response);
-                });
-            }
-        }
-
-        if ($scope.signedInUser.favoriteUsers) {
-            for (i = 0; i < $scope.signedInUser.favoriteUsers.length; i++) {
-                $http.get("/user/" + $scope.signedInUser.favoriteUsers[i]).success(function (response) {
-                    $scope.favoriteUsers.push(response);
-                });
-            }
-        }
-    }
-    */
-    //updateTables();
-
-    //$scope.activeUserCopy = null;
     $scope.editProfile = function () {
-        /*
-        $scope.activeUserCopy = {
-            firstName: $scope.signedInUser.firstName,
-            lastName: $scope.signedInUser.lastName,
-            email: $scope.signedInUser.email,
-            password: $scope.signedInUser.password,
-            favoriteChairs: $scope.signedInUser.favoriteChairs,
-            favoriteUsers: $scope.signedInUser.favoriteUsers,
-            chairs: $scope.signedInUser.chairs
-        };
-        $scope.updatedUser = {
-            firstName: $scope.signedInUser.firstName,
-            lastName: $scope.signedInUser.lastName,
-            email: $scope.signedInUser.email,
-            password: $scope.signedInUser.password
-        }
-        */
+
         $scope.tempUser = {
             firstName: $rootScope.currentUser.firstName,
             lastName: $rootScope.currentUser.lastName,
@@ -103,29 +53,14 @@ updateTables = function () {
     */
     $scope.updateUser = function (tempUser) {
 
-        //console.log(updatedUser);
-        //console.log(newCourse);\
-        /*
-        tempUser = {
-            firstName: tempUser.firstName,
-            lastName: tempUser.lastName,
-            email: tempUser.email,
-            password: tempUser.password,
-            favoriteChairs: $rootScope.favoriteChairs,
-            favoriteUsers: $rootScope.favoriteUsers,
-            chairs: $rootScope.chairs
-        };
-        */
+
         $http.put("/updateUser/" + $rootScope.currentUser._id, tempUser).success(function (user) {
             $rootScope.currentUser = user;
         });
-            //$scope.selectedIndex = null;
-            //$scope.activeCourseCopy = null;
-
-            //updateTables();
+   
     }
 
-    ///////// REMOVE MY CHAIR
+///////// REMOVE MY CHAIR
     
     var selectedDeleteIndex = -1;
     var selectedDeleteChair = null;
@@ -298,6 +233,8 @@ updateTables = function () {
             
             $rootScope.currentUser.chairs.push(chair._id);
             $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+
+                console.log(user);
                 $rootScope.currentUser = user;
                 createMyChairsTable();
                 $scope.tempChair = null;

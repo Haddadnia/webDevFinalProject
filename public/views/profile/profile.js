@@ -230,25 +230,25 @@
         console.log(chair);
 
 
-        
+        chair._id = "551235552262";
+        $rootScope.currentUser.chairs.push(chair._id);
 
         $http.post("/chair", chair).success(function (chair) {
             console.log(chair._id);
             console.log($rootScope.currentUser);
-            $rootScope.currentUser.chairs.push(chair._id);
-            addChairUpdateUser();
+
+
 
         });
 
-
-    };
-
-    var addChairUpdateUser = function () {
         $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
 
             $rootScope.currentUser = user;
             createMyChairsTable();
             $scope.tempChair = null;
         });
-    }
+
+
+    };
+
 });

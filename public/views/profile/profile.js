@@ -259,6 +259,7 @@
         */
         DatabaseService.updateChair(tempChair,function (chair) {
             createMyChairsTable();
+            createFavoriteChairsTable();
             $scope.tempChair = null;
         });
         /*

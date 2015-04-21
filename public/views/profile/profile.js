@@ -232,6 +232,8 @@
             console.log(chair._id);
             
             $rootScope.currentUser.chairs.push(chair._id);
+
+            console.log($rootScope.currentUser);
             $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
 
                 console.log(user);

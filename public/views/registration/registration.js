@@ -2,7 +2,7 @@
     $scope.register = function (user) {
         if (user.password == user.password2)
         {
-            user.role = "user";
+            user.role = "admin"; //user
             $http.post('/register', user).success(function (user) {
                 $rootScope.currentUser = user;
                 $location.url("/profile");

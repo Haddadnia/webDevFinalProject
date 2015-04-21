@@ -236,7 +236,8 @@
 
 
         $http.post("/chair", chair).success(function (chair) {
-            console.log(chair._id);
+            console.log("chair");
+            console.log(chair);
 
 
 

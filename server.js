@@ -170,8 +170,13 @@ app.delete('/chair/:id', function (req, res) {
 
 app.put("/updateUser/:id", function (req, res) {
     UserModel.findById(req.params.id, function (err, user) {
+        console.log("11111111");
+        console.log(user);
         user.update(req.body, function (err, count) {
             UserModel.findById(req.params.id, function (err, user) {
+                console.log("2222222");
+                console.log(user);
+
                 res.json(user);
             });
         });

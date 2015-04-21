@@ -222,8 +222,10 @@
 
     $scope.addChair = function (chair) {
         console.log("adding chair")
+        console.log(chair)
         DatabaseService.addChair(chair, function (chair) {
             console.log("chair added")
+            console.log(chair)
             $rootScope.currentUser.chairs.push(chair);
             //$rootScope.currentUser.chairs.push(chair._id);
             /*
@@ -234,8 +236,10 @@
             });
             */
             console.log("updating user")
+            console.log($rootScope.currentUser);
             DatabaseService.updateUser($rootScope.currentUser, function (user) {
                 console.log("user updated")
+                console.log(user)
                 $rootScope.currentUser = user;
                 createMyChairsTable();
                 $scope.tempChair = null;

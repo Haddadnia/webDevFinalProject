@@ -1,17 +1,25 @@
-﻿﻿app.controller("newsFeedController", function ($scope, $http, $location, $rootScope) {
+﻿﻿app.controller("newsFeedController", function ($scope, $http, $location, $rootScope, DatabaseService) {
 
-    $scope.signedInUser = $rootScope.currentUser;
-
+    //$scope.signedInUser = $rootScope.currentUser;
+    DatabaseService.getAllChairs(function (chairs) {
+        $scope.chairs = chairs;
+    });
+    /*
     $http.get("/allChairs").success(function (chairs) {
         $scope.chairs = chairs;
     });
-
+    */
     //chair selected
     $scope.chairSelected = function (chair) {
         $rootScope.currentUser.chairToView = chair._id;
+        DatabaseService.updateUser($rootScope.currentUser, function (user) {
+            $rootScope.currentUser = user;
+        });
+        /*
         $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
             $rootScope.currentUser = user;
         });
+        */
         $location.url('/chair');
     }
 
@@ -25,13 +33,15 @@
 
     $scope.favoriteChair = function () {
         $rootScope.currentUser.favoriteChairs.push(selectedChair._id);
-        selectedChair.usersWhoFavorited.push($rootScope.currentUser._id);
+
+        DatabaseService.updateUser($rootScope.currentUser, function (user) {
+            $rootScope.currentUser = user;
+        });
+        /*
         $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
             $rootScope.currentUser = user;
         });
-        $http.put('/updateChair/' + selectedChair._id, selectedChair).success(function (user) {
-
-        });
+        */
         /*
         //update user
 

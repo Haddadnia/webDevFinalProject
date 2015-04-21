@@ -64,9 +64,17 @@ var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope) {
     return deferred.promise;
 };
 
-var getLoggedInUser = function ($q, $timeout, $http, $location, $rootScope) {
+var getLoggedInUser = function ($q, $timeout, $http, $location, $rootScope, DatabaseService) {
     var deferred = $q.defer();
 
+    DatabaseService.loggedIn(function (user) {
+        $rootScope.errorMessage = null;
+        // User is Authenticated
+        if (user !== '0') {
+            $rootScope.currentUser = user;
+        }
+    });
+    /*
     $http.get('/loggedin').success(function (user) {
         $rootScope.errorMessage = null;
         // User is Authenticated
@@ -74,6 +82,7 @@ var getLoggedInUser = function ($q, $timeout, $http, $location, $rootScope) {
             $rootScope.currentUser = user;
         }
     });
+    */
     deferred.resolve();
     return deferred.promise;
 };
@@ -94,7 +103,6 @@ app.factory('DatabaseService', function ($http) {
     }
 
     var updateUser = function (user, callback) {
-        console.log(user);
         $http.put("/updateUser/" + user._id, user).success(callback);
     }
 
@@ -130,6 +138,10 @@ app.factory('DatabaseService', function ($http) {
         $http.delete("/comment/" + commentID).success(callback);
     }
 
+    var loggedIn = function (callback) {
+        $http.get('/loggedin').success(callback);
+    }
+
     return {
         getUser: getUser,
         updateUser: updateUser,
@@ -140,6 +152,7 @@ app.factory('DatabaseService', function ($http) {
         deleteChair: deleteChair,
         getComment: getComment,
         addComment: addComment,
-        deleteComment: deleteComment
+        deleteComment: deleteComment,
+        loggedIn: loggedIn
     }
 });

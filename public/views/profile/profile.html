@@ -5,7 +5,6 @@
 
 </head>
 <body>
-    {{currentUser}}
     <main>
 
         <!-- edit profile modal -->
@@ -219,7 +218,7 @@
                             <td>{{myChair.description}}</td>
                             <td><img src="{{myChair.image}}" height="100" /></td>
                             <td>
-                                <button ng-click="deleteChairPressed($index,myChair)" data-target="#deleteConfirmModalChair" data-toggle="modal" data-chair={{myChair}} class="btn btn-danger pull-right">
+                                <button ng-click="deleteChairPressed(myChair)" data-target="#deleteConfirmModalChair" data-toggle="modal" data-chair={{myChair}} class="btn btn-danger pull-right">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
                                 <button ng-click="editChairPressed(myChair)" data-target="#editChairModal" data-toggle="modal" id="Button1" class="btn btn-primary pull-right">
@@ -253,7 +252,7 @@
                             <td>{{chair.description}}</td>
                             <td><img src="{{chair.image}}" height="100" /></td>
                             <td>
-                                <button ng-click="deleteChairFavoritePressed($index)" data-target="#deleteFavoriteModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
+                                <button ng-click="deleteChairFavoritePressed(chair)" data-target="#deleteFavoriteModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
                             </td>
@@ -279,7 +278,7 @@
                             <td>{{user.firstName}}</td>
                             <td>{{user.lastName}}</td>
                             <td>
-                                <button ng-click="deleteUserPressed($index)" data-target="#deleteConfirmModalUser" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
+                                <button ng-click="deleteUserPressed(user)" data-target="#deleteConfirmModalUser" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
                             </td>

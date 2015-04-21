@@ -1,17 +1,33 @@
 ﻿app.controller("profileController", function ($scope, $http, $rootScope, $location, DatabaseService) {
     //$scope.signedInUser = $rootScope.currentUser;
-
+    
     var createMyChairsTable = function () {
-        $scope.myChairs = $rootScope.currentUser.chairs;
+        $scope.myChairs = [];
+        var myChairIDs = $rootScope.currentUser.chairs;
+        for (i = 0; i < myChairIDs.length ; i++) {
+            DatabaseService.getChair(myChairIDs[i], function (chair) {
+                $scope.myChairs.push(chair);
+            });
+            /*
+            $http.get("/chair/" + favoriteChairIDs[i]).success(function (chair) {
+                $scope.favoriteChairs.push(chair);
+            });
+            */
+        }
     }
 
     var createFavoriteChairsTable = function () {
         $scope.favoriteChairs = [];
         var favoriteChairIDs = $rootScope.currentUser.favoriteChairs;
         for (i = 0; i < favoriteChairIDs.length ; i++) {
+            DatabaseService.getChair(favoriteChairIDs[i], function (chair) {
+                $scope.favoriteChairs.push(chair);
+            });
+            /*
             $http.get("/chair/" + favoriteChairIDs[i]).success(function (chair) {
                 $scope.favoriteChairs.push(chair);
             });
+            */
         }
     }
 
@@ -19,9 +35,14 @@
         $scope.favoriteUsers = [];
         var favoriteUserIDs = $rootScope.currentUser.favoriteUsers;
         for (i = 0; i < favoriteUserIDs.length ; i++) {
+            DatabaseService.getUser(favoriteUserIDs[i], function (chair) {
+                $scope.favoriteUsers.push(chair);
+            });
+            /*
             $http.get("/user/" + favoriteUserIDs[i]).success(function (user) {
                 $scope.favoriteUsers.push(user);
             });
+            */
         }
     }
 
@@ -46,93 +67,113 @@
     }
     */
     $scope.updateUser = function (tempUser) {
+        $rootScope.currentUser.firstName = tempUser.firstName;
+        $rootScope.currentUser.lastName = tempUser.lastName;
+        $rootScope.currentUser.email = tempUser.email;
+        $rootScope.currentUser.password = tempUser.password;
 
-
+        DatabaseService.updateUser($rootScope.currentUser, function (user) {
+            $rootScope.currentUser = user;
+        });
+        /*
         $http.put("/updateUser/" + $rootScope.currentUser._id, tempUser).success(function (user) {
             $rootScope.currentUser = user;
         });
+        */
    
     }
 
 ///////// REMOVE MY CHAIR
     
-    var selectedDeleteIndex = -1;
     var selectedDeleteChair = null;
-    $scope.deleteChairPressed = function (index, chair) {
-        console.log(index);
-        selectedDeleteIndex = index;
+    $scope.deleteChairPressed = function (chair) {
         selectedDeleteChair = chair;
     }
     
     $scope.removeChair = function () {
-        if (selectedDeleteIndex != -1) {
-            $rootScope.currentUser.chairs.splice($scope.selectedDeleteIndex, 1);
-
+        if (selectedDeleteChair != null) {
+            var index = $rootScope.currentUser.chairs.indexOf(selectedDeleteChair._id);
+            $rootScope.currentUser.chairs.splice(index, 1);
+            DatabaseService.updateUser($rootScope.currentUser, function (user) {
+                $rootScope.currentUser = user;
+                createMyChairsTable();
+            });
+            DatabaseService.deleteChair(selectedDeleteChair._id, function (response) {
+                
+            });
+            /*
             $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
-                console.log(user);
                 $rootScope.currentUser = user;
             });
-
+            */
+            /*
             $http.delete("/chair/" + selectedDeleteChair._id).success(function (response) {
                 console.log(response);
             });
+            */
         }
-        selectedDeleteIndex = -1;
         selectedDeleteChair = null;
-        createMyChairsTable();
     }
 
     $scope.removeChairCancelled = function () {
-        selectedDeleteIndex = -1;
         selectedDeleteChair = null;
     }
 ////////////////////////////    Favorites stuff
 
     /////////// REMOVE CHAIR FAVORITE
     
-    var selectedDeleteIndexFavoriteChair = -1;
-    $scope.deleteChairFavoritePressed = function (index) {
-        selectedDeleteIndexFavoriteChair = index;
+    var selectedDeleteFavoriteChair = null;
+    $scope.deleteChairFavoritePressed = function (favChair) {
+        selectedDeleteFavoriteChair = favChair;
     }
     
     $scope.removeChairFavorite = function () {
-        if (selectedDeleteIndexFavoriteChair != -1) {
-            $rootScope.currentUser.favoriteChairs.splice(selectedDeleteIndexFavoriteChair, 1);
-                    
+        if (selectedDeleteFavoriteChair != null) {
+            var index = $rootScope.currentUser.favoriteChairs.indexOf(selectedDeleteFavoriteChair._id);
+            $rootScope.currentUser.favoriteChairs.splice(index, 1);
+            DatabaseService.updateUser($rootScope.currentUser, function (user) {
+                $rootScope.currentUser = user;
+                createFavoriteChairsTable();
+            });
+            /*
             $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
                 $rootScope.currentUser = user;
             });
+            */
         }
-        selectedDeleteIndexFavoriteChair = -1;
-        createFavoriteChairsTable();
+        selectedDeleteFavoriteChair = null;
     }
 
     $scope.removeChairFavoriteCancelled = function () {
-        selectedDeleteIndexFavoriteChair = -1;
+        selectedDeleteFavoriteChair = null
     }
     
 ////////////////REMOVE USER FAVORITE
     
-    var selectedDeleteIndexUser = -1;
-    $scope.deleteUserPressed = function (index) {
-        selectedDeleteIndexUser = index;
+    var selectedDeleteUser = null;
+    $scope.deleteUserPressed = function (user) {
+        selectedDeleteUser = user;
     }
 
     $scope.removeUser = function () {
-        if (selectedDeleteIndexUser != -1) {
-            $rootScope.currentUser.favoriteUsers.splice(selectedDeleteIndexUser, 1);
-        
+        if (selectedDeleteUser != null) {
+            var index = $rootScope.currentUser.favoriteUsers.indexOf(selectedDeleteUser._id);
+            $rootScope.currentUser.favoriteUsers.splice(index, 1);
+            DatabaseService.updateUser($rootScope.currentUser, function (user) {
+                $rootScope.currentUser = user;
+                createFavoriteUsersTable();
+            });
+            /*
             $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
                 $rootScope.currentUser = user;
             });
+            */
         }
-        $scope.selectedDeleteIndexUser = -1;
-        createFavoriteUsersTable();
+        selectedDeleteUser = null;
     }
 
     $scope.removeUserCancelled = function () {
-        $scope.selectedDeleteIndexUser = -1;
-        console.log($scope.selectedDeleteIndexUser);
+        selectedDeleteUser = null;
     }
     ///////////chair selected
     /*
@@ -147,18 +188,29 @@
     */
     $scope.navigateToChair = function (chair) {
         $rootScope.currentUser.chairToView = chair._id;
+
+        DatabaseService.updateUser($rootScope.currentUser, function (user) {
+            $rootScope.currentUser = user;
+        });
+        /*
         $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
             $rootScope.currentUser = user;
         });
+        */
         //console.log($window.sessionStorage.chairToView);
         $location.url('/chair');
     }
     /////////User Selected
     $scope.userSelected = function (user) {
         $rootScope.currentUser.userToView = user._id;
+        DatabaseService.updateUser($rootScope.currentUser, function (user) {
+            $rootScope.currentUser = user;
+        });
+        /*
         $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
             $rootScope.currentUser = user;
         });
+        */
         $location.url('/userView');
     }
     ////////// EDITING A CHAIR
@@ -193,7 +245,6 @@
     }
 
     $scope.updateChair = function (tempChair) {
-        console.log(tempChair);
         /*
         $scope.signedInUser.chairs[$scope.editChairIndex] = updatedChair;
         $scope.signedInUser.chairs[$scope.editChairIndex].picture = "pic";
@@ -206,11 +257,16 @@
         $scope.updatedChair = null;
         $scope.editChairIndex = -1;
         */
-        
+        DatabaseService.updateChair(tempChair,function (chair) {
+            createMyChairsTable();
+            $scope.tempChair = null;
+        });
+        /*
         $http.put("/updateChair/" + tempChair._id, tempChair).success(function (chair) {
             createMyChairsTable();
             $scope.tempChair = null;
         });
+        */
     }
 
     $scope.Add = "Add";
@@ -221,12 +277,8 @@
     };
 
     $scope.addChair = function (chair) {
-        console.log("adding chair")
-        console.log(chair)
         DatabaseService.addChair(chair, function (chair) {
-            console.log("chair added")
-            console.log(chair)
-            $rootScope.currentUser.chairs.push(chair);
+            $rootScope.currentUser.chairs.push(chair._id);
             //$rootScope.currentUser.chairs.push(chair._id);
             /*
             $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
@@ -235,25 +287,12 @@
                 $scope.tempChair = null;
             });
             */
-            console.log("updating user")
-            console.log($rootScope.currentUser);
             DatabaseService.updateUser($rootScope.currentUser, function (user) {
-                console.log("user updated")
-                console.log(user)
                 $rootScope.currentUser = user;
                 createMyChairsTable();
                 $scope.tempChair = null;
             });
         });
-        /*
-        console.log("updating user")
-        DatabaseService.updateUser($rootScope.currentUser, function (user) {
-            console.log("user updated")
-            $rootScope.currentUser = user;
-            createMyChairsTable();
-            $scope.tempChair = null;
-        });
-        */
         /*
         $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
             $rootScope.currentUser = user;

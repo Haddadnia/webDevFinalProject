@@ -37,24 +37,24 @@ var UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     role: String,
-    favoriteChairs: [],
-    favoriteUsers: [],
-    chairs: [],
-    chairToView: [],
-    userToView: []
+    favoriteChairs: [String],
+    favoriteUsers: [String],
+    chairs: [String],
+    chairToView: String,
+    userToView: String
 });
 
 var ChairSchema = new mongoose.Schema({
     name: String,
     image: String,
     description: String,
-    usersWhoFavorited: [],
-    comments: []
+    comments: [String]
 });
 
 var CommentSchema = new mongoose.Schema({
     text: String,
-    user: []
+    userID: String,
+    username: String
 });
 
 var UserModel = mongoose.model("UserModel", UserSchema);
@@ -160,6 +160,15 @@ app.get('/chair/:id', function (req, res) {
 });
 
 app.put("/updateChair/:id", function (req, res) {
+    var id = req.params.id;
+    ChairModel.remove({ _id: id }, function (err, count) {
+        var newChair = new ChairModel(req.body);
+        newChair._id = id;
+        newChair.save(function (err, chair) {
+            res.json(chair);
+        });
+    });
+    /*
     ChairModel.findById(req.params.id, function (err, chair) {
         chair.update(req.body, function (err, count) {
             ChairModel.findById(req.params.id, function (err, chair) {
@@ -167,6 +176,7 @@ app.put("/updateChair/:id", function (req, res) {
             });
         });
     });
+    */
 });
 
 app.delete('/chair/:id', function (req, res) {

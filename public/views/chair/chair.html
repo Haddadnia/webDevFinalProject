@@ -4,21 +4,10 @@
     <title>Chair Mecca: Chair</title>
 </head>
 <body>
-    {{currentUser}}
     <div class="container">
-        <div class="col-sm-6">
-            <img src="{{chair.image}}" class="img-responsive center-block" style="border:1px solid #021a40" alt="Responsive image">
-            <h1 class="text-center">{{chair.name}}</h1>
-            <p class="text-center">Description: {{chair.description}}</p>
-        </div>
-        <div class="panel panel-primary col-sm-6">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Users Who Favorited This Chair</div>
-            <!-- List group -->
-            <ul class="list-group">
-                <li ng-repeat="user in favoriteUsers" class="list-group-item">{{user.username}}</li>
-            </ul>
-        </div>
+        <img src="{{chair.image}}" class="img-responsive center-block" style="border:1px solid #021a40" alt="Responsive image">
+        <h1 class="text-center">{{chair.name}}</h1>
+        <p class="text-center">Description: {{chair.description}}</p>
     </div>
     
     <div class="container">
@@ -35,11 +24,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="i in numArray">
-                    <td>{{comments[i].text}}</td>
-                    <td><a ng-click="userSelected(users[i])">{{users[i].username}}</a></td>
+                <tr ng-repeat="comment in comments">
+                    <td>{{comment.text}}</td>
+                    <td><a ng-click="userSelected(comment)">{{comment.username}}</a></td>
                     <td ng-show="currentUser.role == admin">
-                        <button ng-click="deleteCommentPressed($index,comments[i])" data-target="#deleteConfirmModalComment" data-toggle="modal" class="btn btn-danger pull-right">
+                        <button ng-click="deleteCommentPressed(comment)" data-target="#deleteConfirmModalComment" data-toggle="modal" class="btn btn-danger pull-right">
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     </td>

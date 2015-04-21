@@ -1,28 +1,29 @@
-﻿app.controller("chairController", function ($scope, $http, $rootScope, $location) {
-    /*
-    $http.get("/syncRequest").success(function (response) {
-        
+﻿app.controller("chairController", function ($scope, $http, $rootScope, $location, DatabaseService) {
+
+    DatabaseService.getChair($rootScope.currentUser.chairToView, function (chair) {
+        $scope.chair = chair;
+        createCommentTable();
     });
-    */
+
     var createCommentTable = function () {
         var commentIDs = $scope.chair.comments;
         $scope.comments = [];
-        $scope.users = [];
-        $scope.numArray = [];
         for (i = 0; i < commentIDs.length; i++) {
-            console.log(i);
-            $scope.numArray.push(i);
-        }
-        for (i = 0; i < commentIDs.length; i++) {
+            DatabaseService.getComment(commentIDs[i], function (comment) {
+                $scope.comments.push(comment);
+            });
+            /*
             $http.get("/comment/" + commentIDs[i]).success(function (comment) {
                 $scope.comments.push(comment);
                 $http.get("/user/" + comment.user).success(function (user) {
                     $scope.users.push(user);
                 });
             });
+            */
         }
     }
 
+    /*
     var createFavoriteUserPanel = function () {
         var userIDs = $scope.chair.usersWhoFavorited;
         $scope.favoriteUsers = [];
@@ -37,23 +38,37 @@
         $scope.chair = chair;
         createCommentTable();
     });
+    */
     
     
     
-    
-    $scope.userSelected = function (user) {
-        $rootScope.currentUser.userToView = user._id;
+    $scope.userSelected = function (comment) {
+        $rootScope.currentUser.userToView = comment.userID;
+        DatabaseService.updateUser($rootScope.currentUser, function (user) {
+            $rootScope.currentUser = user;
+        });
+        /*
         $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
             $rootScope.currentUser = user;
         });
+        */
         $location.url('/userView');
     }
 
     $scope.submitComment = function (text) {
         var comment = {
             text: text,
-            user: $scope.currentUser._id
+            username: $rootScope.currentUser.username,
+            userID: $rootScope.currentUser._id
         };
+
+        DatabaseService.addComment(comment, function (comment) {
+            $scope.chair.comments.push(comment._id);
+            DatabaseService.updateChair($scope.chair, function (chair) {
+                createCommentTable();
+            });
+        });
+        /*
         $http.post("/comment", comment).success(function (comment) {
             console.log(comment._id)
             var chair = $scope.chair;
@@ -62,21 +77,26 @@
                 createCommentTable();
             });
         });
+        */
     }
 
     $scope.admin = "admin";
-    var selectedDeleteIndex = -1;
     var selectedDeleteComment = null;
-    $scope.deleteCommentPressed = function (index, comment) {
-        console.log(index);
-        selectedDeleteIndex = index;
+    $scope.deleteCommentPressed = function (comment) {
         selectedDeleteComment = comment;
     }
 
     $scope.removeComment = function () {
-        if (selectedDeleteIndex != -1) {
-            $scope.chair.comments.splice($scope.selectedDeleteIndex, 1);
+        if (selectedDeleteComment != null) {
+            var index = $scope.chair.comments.indexOf(selectedDeleteComment._id);
+            $scope.chair.comments.splice(index, 1);
+            DatabaseService.updateChair($scope.chair, function (chair) {
 
+            });
+            DatabaseService.deleteComment(selectedDeleteComment._id, function (response) {
+
+            });
+            /*
             $http.put("/updateChair/" + $scope.chair._id, $scope.chair).success(function (chair) {
                 
             });
@@ -84,25 +104,28 @@
             $http.delete("/comment/" + selectedDeleteComment._id).success(function (response) {
                 
             });
+            */
         }
-        selectedDeleteIndex = -1;
         selectedDeleteComment = null;
         createCommentTable();
     }
 
     $scope.removeCommentCancelled = function () {
-        selectedDeleteIndex = -1;
         selectedDeleteComment = null;
     }
 
     $scope.favoriteChair = function () {
         $rootScope.currentUser.favoriteChairs.push($scope.chair._id);
-        $scope.chair.usersWhoFavorited.push($rootScope.currentUser._id);
+        DatabaseService.updateUser($rootScope.currentUser, function (user) {
+            $rootScope.currentUser = user;
+        });
+        /*
         $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
             $rootScope.currentUser = user;
         });
         $http.put('/updateChair/' + $scope.chair._id, $scope.chair).success(function (user) {
             createFavoriteUserPanel();
         });
+        */
     }
 });

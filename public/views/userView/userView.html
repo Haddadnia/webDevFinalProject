@@ -4,7 +4,6 @@
     <title></title>
 </head>
 <body>
-    {{user}}
     <div class="page-header container"><h1>{{user.username}} 's Profile</h1></div>
     <div class="container">
         <div class="container">
@@ -82,8 +81,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="user in user.favoriteUsers">
-                            <td><a ng-click="userSelected($index)">{{user.firstName}}</a></td>
+                        <tr ng-repeat="user in favoriteUsers">
+                            <td><a ng-click="userSelected(user)">{{user.firstName}}</a></td>
                             <td>{{user.lastName}}</td>
                         </tr>
                     </tbody>

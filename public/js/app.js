@@ -93,6 +93,7 @@ app.factory('DatabaseService', function ($http) {
     }
 
     var updateUser = function (user, callback) {
+        console.log(user);
         $http.put("/updateUser/" + user._id, user).success(callback);
     }
 

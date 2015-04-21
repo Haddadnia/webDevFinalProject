@@ -232,10 +232,12 @@
 
         chair._id = "551235552262";
         $rootScope.currentUser.chairs.push(chair._id);
+        console.log($rootScope.currentUser);
+
 
         $http.post("/chair", chair).success(function (chair) {
             console.log(chair._id);
-            console.log($rootScope.currentUser);
+
 
 
 

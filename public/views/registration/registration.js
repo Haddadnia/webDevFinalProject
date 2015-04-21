@@ -4,7 +4,6 @@
         {
             user.role = "user";
             $http.post('/register', user).success(function (user) {
-                console.log(user);
                 $rootScope.currentUser = user;
                 $location.url("/profile");
             });
@@ -12,6 +11,5 @@
         else {
             alert("Passwords do not match");
         }
-        //ELSE NOTIFY USER
     };
 });

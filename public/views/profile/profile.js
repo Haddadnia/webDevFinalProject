@@ -1,18 +1,41 @@
-﻿app.controller("profileController", function ($scope, $http, $rootScope, $location) {
-    
-    $scope.signedInUser = $rootScope.currentUser;
+﻿app.controller("profileController", function ($scope, $http, $rootScope, $location, $window) {
+    //$scope.signedInUser = $rootScope.currentUser;
 
+    var createMyChairsTable = function () {
+        $scope.chairs = [];
+        var chairIDs = $rootScope.currentUser.chairs;
+        for (i = 0; i < chairIDs.length ; i++) {
+            $http.get("/chair/" + chairIDs[i]).success(function (chair) {
+                $scope.chairs.push(chair);
+            });
+        }
+    }
+
+    var createFavoriteChairsTable = function () {
+        $scope.favoriteChairs = [];
+        var favoriteChairIDs = $rootScope.currentUser.favoriteChairs;
+        for (i = 0; i < favoriteChairIDs.length ; i++) {
+            $http.get("/chair/" + favoriteChairIDs[i]).success(function (chair) {
+                $scope.favoriteChairs.push(chair);
+            });
+        }
+    }
+
+    var createFavoriteUsersTable = function () {
+        $scope.favoriteUsers = [];
+        var favoriteUserIDs = $rootScope.currentUser.favoriteUsers;
+        for (i = 0; i < favoriteUserIDs.length ; i++) {
+            $http.get("/user/" + favoriteUserIDs[i]).success(function (user) {
+                $scope.favoriteUsers.push(user);
+            });
+        }
+    }
+
+    createMyChairsTable();
+    createFavoriteChairsTable();
+    createFavoriteUsersTable();
     /*
-    $http.get("/user/" + $rootScope.currentUser._id).success(function (response) {
-        $scope.signedInUser = response;
-    });
-    */
-
-    console.log($rootScope.currentUser);
-    console.log($scope.signedInUser.favoriteChairs);
-    
-
-    updateTables = function () {
+updateTables = function () {
         $scope.signedInUser = $rootScope.currentUser;
         $scope.chairs = [];
         $scope.favoriteUsers = [];
@@ -42,12 +65,12 @@
             }
         }
     }
+    */
+    //updateTables();
 
-    updateTables();
-
-    $scope.activeUserCopy = null;
+    //$scope.activeUserCopy = null;
     $scope.editProfile = function () {
-
+        /*
         $scope.activeUserCopy = {
             firstName: $scope.signedInUser.firstName,
             lastName: $scope.signedInUser.lastName,
@@ -63,120 +86,127 @@
             email: $scope.signedInUser.email,
             password: $scope.signedInUser.password
         }
-
+        */
+        $scope.tempUser = {
+            firstName: $rootScope.currentUser.firstName,
+            lastName: $rootScope.currentUser.lastName,
+            email: $rootScope.currentUser.email,
+            password: $rootScope.currentUser.password
+        };
     }
 
+    /*
     $scope.editUserCancelled = function () {
         $scope.signedInUser = $scope.activeUserCopy;
         $scope.activeCourseCopy = null;
     }
+    */
+    $scope.updateUser = function (tempUser) {
 
-    $scope.updateUser = function (updatedUser) {
+        //console.log(updatedUser);
+        //console.log(newCourse);\
+        /*
+        tempUser = {
+            firstName: tempUser.firstName,
+            lastName: tempUser.lastName,
+            email: tempUser.email,
+            password: tempUser.password,
+            favoriteChairs: $rootScope.favoriteChairs,
+            favoriteUsers: $rootScope.favoriteUsers,
+            chairs: $rootScope.chairs
+        };
+        */
+        $http.put("/updateUser/" + $rootScope.currentUser._id, tempUser).success(function (user) {
+            $rootScope.currentUser = user;
+        });
+            //$scope.selectedIndex = null;
+            //$scope.activeCourseCopy = null;
 
-        console.log(updatedUser);
-        //console.log(newCourse);
-        $scope.signedInUser = {
-            firstName: updatedUser.firstName,
-            lastName: updatedUser.lastName,
-            email: updatedUser.email,
-            password: updatedUser.password,
-            favoriteChairs: $scope.activeUserCopy.favoriteChairs,
-            favoriteUsers: $scope.activeUserCopy.favoriteUsers,
-            chairs: $scope.activeUserCopy.chairs
-        }
-        $http.put("/updateUser/" + signedInUser._id, $scope.signedInUser)
-            .success(function (response) {
-                $rootScope.currentUser = response;
-            });
-            $scope.selectedIndex = null;
-            $scope.activeCourseCopy = null;
-
-            updateTables();
+            //updateTables();
     }
 
-///////// REMOVE MY CHAIR
-    $scope.selectedDeleteIndex = -1;
-    $scope.deleteChairPressed = function (index) {
+    ///////// REMOVE MY CHAIR
+    
+    var selectedDeleteIndex = -1;
+    var selectedDeleteChair = null;
+    $scope.deleteChairPressed = function (index, chair) {
         console.log(index);
-        $scope.selectedDeleteIndex = index;
+        selectedDeleteIndex = index;
+        selectedDeleteChair = chair;
     }
-
+    
     $scope.removeChair = function () {
+        if (selectedDeleteIndex != -1) {
+            $rootScope.currentUser.chairs.splice($scope.selectedDeleteIndex, 1);
 
-        $scope.signedInUser.chairs.splice($scope.selectedDeleteIndex, 1);
-        if ($scope.selectedDeleteIndex != -1) {
-            $http.put("/updateUser/" + $scope.signedInUser._id, $scope.signedInUser).success(function (response) {
+            $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+                console.log(user);
+                $rootScope.currentUser = user;
+            });
+
+            $http.delete("/chair/" + selectedDeleteChair._id).success(function (response) {
                 console.log(response);
-                $routeScope.currentUser = response;
             });
         }
-        $scope.selectedDeleteIndex = -1;
-        updateTables();
+        selectedDeleteIndex = -1;
+        selectedDeleteChair = null;
+        createMyChairsTable();
     }
 
     $scope.removeChairCancelled = function () {
-        $scope.selectedDeleteIndex = -1;
-        console.log($scope.selectedDeleteIndex);
+        selectedDeleteIndex = -1;
+        selectedDeleteChair = null;
     }
-
-
 ////////////////////////////    Favorites stuff
 
-/////////// REMOVE CHAIR FAVORITE
-    $scope.selectedDeleteIndexFavoriteChair = -1;
+    /////////// REMOVE CHAIR FAVORITE
+    
+    var selectedDeleteIndexFavoriteChair = -1;
     $scope.deleteChairFavoritePressed = function (index) {
-        console.log(index);
-        $scope.selectedDeleteIndexFavoriteChair = index;
+        selectedDeleteIndexFavoriteChair = index;
     }
-
+    
     $scope.removeChairFavorite = function () {
-
-        $scope.signedInUser.favoriteChairs.splice($scope.selectedDeleteIndexFavoriteChair, 1);
-        //TODO acgually update correct signed in user
-
-        console.log($scope.signedInUser.favoriteChairs);
-        if ($scope.selectedDeleteIndexFavoriteChair != -1) {
-            $http.put("/updateUser/" + $scope.signedInUser._id, $scope.signedInUser).success(function (response) {
-
-                $rootScope.currentUser = response;
-                console.log($rootScope.currentUser);
+        if (selectedDeleteIndexFavoriteChair != -1) {
+            $rootScope.currentUser.favoriteChairs.splice(selectedDeleteIndexFavoriteChair, 1);
+                    
+            $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+                $rootScope.currentUser = user;
             });
         }
-        $scope.selectedDeleteIndexFavoriteChair = -1;
-        updateTables();
+        selectedDeleteIndexFavoriteChair = -1;
+        createFavoriteChairsTable();
     }
 
     $scope.removeChairFavoriteCancelled = function () {
-        $scope.selectedDeleteIndexFavoriteChair = -1;
-        console.log($scope.selectedDeleteIndexFavoriteChair);
+        selectedDeleteIndexFavoriteChair = -1;
     }
-
+    
 ////////////////REMOVE USER FAVORITE
-
-    $scope.selectedDeleteIndexUser = -1;
+    
+    var selectedDeleteIndexUser = -1;
     $scope.deleteUserPressed = function (index) {
-        $scope.selectedDeleteIndexUser = index;
+        selectedDeleteIndexUser = index;
     }
 
     $scope.removeUser = function () {
-        $scope.signedInUser.favoriteUsers.splice($scope.selectedDeleteIndexUser, 1);
-        if ($scope.selectedDeleteIndexUser != -1) {
-            $http.put("/updateUser/" + $scope.signedInUser._id, $scope.signedInUser).success(function (response) {
-                console.log(response);
-                $rootScope.currentUser = response;
+        if (selectedDeleteIndexUser != -1) {
+            $rootScope.currentUser.favoriteUsers.splice(selectedDeleteIndexUser, 1);
+        
+            $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+                $rootScope.currentUser = user;
             });
         }
         $scope.selectedDeleteIndexUser = -1;
-        updateTables();
+        createFavoriteUsersTable();
     }
 
     $scope.removeUserCancelled = function () {
         $scope.selectedDeleteIndexUser = -1;
         console.log($scope.selectedDeleteIndexUser);
     }
-
-
-///////////chair selected
+    ///////////chair selected
+    /*
     $scope.chairSelectedMyChair = function (index) {
         $rootScope.currentChair = $scope.signedInUser.chairs[index];
         $location.url('/chair');
@@ -185,19 +215,38 @@
         $rootScope.currentChair = $scope.signedInUser.favoriteChairs[index];
         $location.url('/chair');
     }
-
-/////////User Selected
-    $scope.userSelected = function (index) {
-        $rootScope.currentUserView = $scope.signedInUser.favoriteUsers[index];
+    */
+    $scope.navigateToChair = function (chair) {
+        $rootScope.currentUser.chairToView = chair._id;
+        $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+            $rootScope.currentUser = user;
+        });
+        //console.log($window.sessionStorage.chairToView);
+        $location.url('/chair');
+    }
+    /////////User Selected
+    $scope.userSelected = function (user) {
+        $rootScope.currentUser.userToView = user._id;
+        $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+            $rootScope.currentUser = user;
+        });
         $location.url('/userView');
     }
+    ////////// EDITING A CHAIR
+    
+    //$scope.editChairIndex = -1;
+    //$scope.editChairPressed = function (index) {
+    $scope.editChairPressed = function (chair) {
+        //$scope.editChairIndex = index;
+        $scope.chairModalMode = "Edit";
 
-////////// EDITING A CHAIR
-    $scope.editChairIndex = -1;
-    $scope.editChairPressed = function (index) {
-
-        $scope.editChairIndex = index;
-
+        $scope.tempChair = {
+            _id: chair._id,
+            name: chair.name,
+            description: chair.description,
+            image: chair.image
+        };
+        /*
         $scope.activeChairCopy = {
             name: $scope.signedInUser.chairs[index].name,
             description: $scope.signedInUser.chairs[index].description,
@@ -207,16 +256,16 @@
             name: $scope.signedInUser.chairs[index].name,
             description: $scope.signedInUser.chairs[index].description
         }
+        */
     }
-
 
     $scope.editChairCancelled = function () {
-        $scope.activeChairCopy = null;
-        $scope.updatedChair = null;
-        $scope.editChairIndex = -1;
+        $scope.tempChair = null;
     }
 
-    $scope.updateChair = function (updatedChair) {
+    $scope.updateChair = function (tempChair) {
+        console.log(tempChair);
+        /*
         $scope.signedInUser.chairs[$scope.editChairIndex] = updatedChair;
         $scope.signedInUser.chairs[$scope.editChairIndex].picture = "pic";
 
@@ -227,6 +276,32 @@
         $scope.activeChairCopy = null;
         $scope.updatedChair = null;
         $scope.editChairIndex = -1;
+        */
+        
+        $http.put("/updateChair/" + tempChair._id, tempChair).success(function (chair) {
+            createMyChairsTable();
+            $scope.tempChair = null;
+        });
     }
 
+    $scope.Add = "Add";
+    $scope.Edit = "Edit";
+    $scope.admin = "admin";
+    $scope.addChairClicked = function () {
+        $scope.chairModalMode = "Add";
+    };
+
+    $scope.addChair = function (chair) {
+        console.log(chair);
+        $http.post("/chair", chair).success(function (chair) {
+            console.log(chair._id);
+            
+            $rootScope.currentUser.chairs.push(chair._id);
+            $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+                $rootScope.currentUser = user;
+                createMyChairsTable();
+                $scope.tempChair = null;
+            });
+        });
+    };
 });

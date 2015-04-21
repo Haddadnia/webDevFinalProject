@@ -4,7 +4,7 @@
     <title>Chair Mecca: News Feed</title>
 </head>
 <body>
-
+    {{currentUser}}
     <main>
 
 
@@ -17,11 +17,11 @@
                     <h4 class="modal-title">Add to favorites?</h4>
                 </div>
             <div class="modal-body">
-                <p>Press Yes to add the chair to your favorites, press No to cancel</p>
+                <p>Press Yes to add this chair to your favorites, press No to cancel</p>
             </div>
             <div class="modal-footer" >
                 <button ng-click="favoriteChair()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
-                <button ng-click="favoriteChairCancelled()" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
             </div>
         </div>
        </div>
@@ -40,12 +40,17 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="chair in chairs">
-                            <td><a ng-click="chairSelected($index)" >{{chair.name}}</a></td>
+                            <td>
+                                <a ng-show="currentUser" ng-click="chairSelected(chair)">{{chair.name}}</a>
+                                <p ng-show="!currentUser">{{chair.name}}</p>
+                            </td>
                             <td>{{chair.description}}</td>
-                            <td><img src="{{chair.image}}" height="100"/></td>
-                            <td ng-show="currentUser"><button ng-click="favoriteChairPressed(chair._id)" data-target="#addToFavoriteConfirmModal" data-toggle="modal" class="btn btn-warning pull-right">
-                                <span class="glyphicon glyphicon-star"></span>
-                            </button></td>
+                            <td><img src="{{chair.image}}" height="100" /></td>
+                            <td ng-show="currentUser">
+                                <button ng-click="favoriteChairPressed(chair._id)" data-target="#addToFavoriteConfirmModal" data-toggle="modal" class="btn btn-warning pull-right">
+                                    <span class="glyphicon glyphicon-star"></span>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

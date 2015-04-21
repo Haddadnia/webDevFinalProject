@@ -4,6 +4,7 @@
     <title>Chair Mecca: Chair</title>
 </head>
 <body>
+    {{currentUser}}
     <div class="container">
         <img src="{{chair.image}}" class="img-responsive center-block" style="border:1px solid #021a40" alt="Responsive image">
         <h1 class="text-center">{{chair.name}}</h1>
@@ -16,18 +17,24 @@
                 <tr>
                     <th>Comment</th>
                     <th>User</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="i in numArray">
-                    <td>{{comments[i-1].text}}</td>
-                    <td><a ng-click="userSelected($index)">{{users[i-1].username}}</a></td>
+                    <td>{{comments[i].text}}</td>
+                    <td><a ng-click="userSelected(users[i])">{{users[i].username}}</a></td>
+                    <td ng-show="currentUser.role == admin">
+                        <button ng-click="deleteCommentPressed($index,comments[i])" data-target="#deleteConfirmModalComment" data-toggle="modal" class="btn btn-danger pull-right">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div class="container" ng-show="currentUser">
+    <div class="container">
         <form>
             <div class="form-group">
                 <label for="comment">Comment</label>
@@ -35,6 +42,27 @@
             </div>
             <button type="submit" class="btn btn-primary" ng-click="submitComment(text)">Submit</button>
         </form>
+    </div>
+
+    <!-- delete confirm modal comment-->
+    <div id="deleteConfirmModalComment" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Press Yes to remove this comment from the database, press No to cancel</p>
+                </div>
+                <div hidden="hidden" id="deleteIndexComment" index>
+                </div>
+                <div class="modal-footer">
+                    <button ng-click="removeComment()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="removeCommentCancelled()">No</button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -4,6 +4,9 @@ app.config(function ($routeProvider, $httpProvider) {
     $routeProvider
         .when('/feed', {
             templateUrl: 'views/newsFeed/newsFeed.html',
+            resolve: {
+                getLoggedInUser: getLoggedInUser
+            },
             controller: 'newsFeedController'
         })
         .when('/login', {
@@ -23,10 +26,16 @@ app.config(function ($routeProvider, $httpProvider) {
         })
         .when('/chair', {
             templateUrl: 'views/chair/chair.html',
+            resolve: {
+                getLoggedInUser: getLoggedInUser
+            },
             controller: 'chairController'
         })
         .when('/userView', {
             templateUrl: 'views/userView/userView.html',
+            resolve: {
+                getLoggedInUser: getLoggedInUser
+            },
             controller: 'userViewController'
         })
         .otherwise({
@@ -36,7 +45,6 @@ app.config(function ($routeProvider, $httpProvider) {
 
 var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope) {
     var deferred = $q.defer();
-
     $http.get('/loggedin').success(function (user) {
         $rootScope.errorMessage = null;
         // User is Authenticated
@@ -53,6 +61,20 @@ var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope) {
         }
     });
 
+    return deferred.promise;
+};
+
+var getLoggedInUser = function ($q, $timeout, $http, $location, $rootScope) {
+    var deferred = $q.defer();
+
+    $http.get('/loggedin').success(function (user) {
+        $rootScope.errorMessage = null;
+        // User is Authenticated
+        if (user !== '0') {
+            $rootScope.currentUser = user;
+        }
+    });
+    deferred.resolve();
     return deferred.promise;
 };
 

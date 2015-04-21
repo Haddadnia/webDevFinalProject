@@ -2,9 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Chair Mecca: Profile</title>
+
 </head>
 <body>
-
+    {{currentUser}}
     <main>
 
         <!-- edit profile modal -->
@@ -16,28 +17,36 @@
                         <h4 class="modal-title" id="modalTitle">Edit Profile</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="container">
-                            <div class="form-group row">
-                                <div class="col-sm-2"><label class="field-label">First Name</label></div>
-                                <div class="field col-md-4 form-group"><input type="text" class="form-control" id="Text1" placeholder="First Name" ng-model="updatedUser.firstName" /></div>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">First Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="Text1" placeholder="First Name" ng-model="tempUser.firstName" />
+                                </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-sm-2"><label class="field-label">Last Name</label></div>
-                                <div class="field col-md-4 form-group"><input type="text" class="form-control" id="Text2" placeholder="Last Name" ng-model="updatedUser.lastName" /></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Last Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="Text2" placeholder="Last Name" ng-model="tempUser.lastName" />
+                                </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-sm-2"><label class="field-label">Email</label></div>
-                                <div class="field col-md-4 form-group"><input type="email" class="form-control" id="email1" placeholder="Email" ng-model="updatedUser.email" /></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="email1" placeholder="Email" ng-model="tempUser.email" />
+                                </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-sm-2"><label class="field-label">Password</label></div>
-                                <div class="field col-md-4 form-group"><input type="password" class="form-control pull-right" id="password1" placeholder="Password" ng-model="updatedUser.password" /></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control pull-right" id="password1" placeholder="Password" ng-model="tempUser.password" />
+                                </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateUser(updatedUser)">Update</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="editUserCancelled()">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateUser(tempUser)">Update</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"> <!--ng-click="editUserCancelled()"--> Cancel</button>
                     </div>
                 </div>
             </div>
@@ -52,23 +61,35 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="H1">Edit Chair</h4>
+                        <h4 class="modal-title" id="H1" ng-show="chairModalMode == Add">Add Chair</h4>
+                        <h4 class="modal-title" id="H1" ng-show="chairModalMode == Edit">Update Chair</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="container">
-                            <div class="form-group row">
-                                <div class="col-sm-2"><label class="field-label">Name</label></div>
-                                <div class="field col-md-4 form-group"><input type="text" class="form-control" id="name" placeholder="Name" ng-model="updatedChair.name" /></div>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="name" placeholder="Name" ng-model="tempChair.name" />
+                                </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-sm-2"><label class="field-label">Description</label></div>
-                                <div class="field col-md-4 form-group"><input type="text" class="form-control" id="description" placeholder="Description" ng-model="updatedChair.description" /></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Description</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="description" placeholder="Description" ng-model="tempChair.description" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Image URL</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="imageURL" placeholder="Image URL" ng-model="tempChair.image" />
+                                </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateChair(updatedChair)">Update</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="updateChairCancelled()">Cancel</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" ng-show="chairModalMode == Add" ng-click="addChair(tempChair)">Add</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-show="chairModalMode == Edit" ng-click="updateChair(tempChair)">Update</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="editChairCancelled()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -90,13 +111,13 @@
                         <h4 class="modal-title">Are you sure?</h4>
                     </div>
                     <div class="modal-body">
-                        <p>Press Yes to remove the chair from your portfolio, press No to cancel</p>
+                        <p>Press Yes to remove this chair from the database, press No to cancel</p>
                     </div>
                     <div hidden="hidden" id="deleteIndexChair" index>
                     </div>
                     <div class="modal-footer">
                         <button ng-click="removeChair()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
-                        <button ng-click="removeChairCancelled()" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="removeChairCancelled()">No</button>
                     </div>
                 </div>
             </div>
@@ -151,15 +172,15 @@
             <div class="container">
                 <div class="form-group row">
                     <div class="col-sm-2"><label class="field-label">First Name</label></div>
-                    <div class="col-md-10">{{signedInUser.firstName}}</div>
+                    <div class="col-md-10">{{currentUser.firstName}}</div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-2"><label class="field-label">Last Name</label></div>
-                    <div class="col-md-10">{{signedInUser.lastName}}</div>
+                    <div class="col-md-10">{{currentUser.lastName}}</div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-2"><label class="field-label">Email</label></div>
-                    <div class="col-md-10">{{signedInUser.email}}</div>
+                    <div class="col-md-10">{{currentUser.email}}</div>
                 </div>
 
 
@@ -169,7 +190,7 @@
                         <label class="field-label"></label>
                     </div>
                     <div class="field col-md-10">
-                        <button ng-click="editProfile()" data-target="#editProfileModal" data-toggle="modal" id="editButton" data-profile={{profile}} class="btn btn-primary">
+                        <button ng-click="editProfile()" data-target="#editProfileModal" data-toggle="modal" id="editButton" class="btn btn-primary">
                             <span class="glyphicon-pencil"></span>
                         </button>
                     </div>
@@ -178,41 +199,8 @@
         </div>
 
         <!-- My chairs -->
-        <div class="page-header container"><h1>My Chairs</h1></div>
-        <div class="container">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Chair</th>
-                        <th>Description</th>
-                        <th>Picture</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="myChair in chairs">
-                        <td><a ng-click="chairSelectedMyChair($index)">{{myChair.name}}</a></td>
-                        <td>{{myChair.description}}</td>
-                        <td>{{myChair.picture}}</td>
-                        <td>
-                            <button ng-click="deleteChairPressed($index)" data-target="#deleteConfirmModalChair" data-toggle="modal" data-chair={{myChair}} data-index={{$index}} class="btn btn-danger pull-right">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-                            <button ng-click="editChairPressed($index)" data-target="#editChairModal" data-toggle="modal" id="Button1" data-chair={{myChair}} class="btn btn-primary pull-right">
-                                <span class="glyphicon-pencil"></span>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-
-        <!-- ---------------------------------------------------------- -->
-
-
-        <!-- favorite chairs -->
-        <div class="page-header container"><h1>Favorite Chairs</h1></div>
+        <div class="container" ng-show="currentUser.role == admin">
+            <div class="page-header container"><h1>My Chairs</h1></div>
             <div class="container">
                 <table class="table table-striped">
                     <thead>
@@ -220,43 +208,86 @@
                             <th>Chair</th>
                             <th>Description</th>
                             <th>Picture</th>
+                            <th>
+                                <button data-target="#editChairModal" data-toggle="modal" class="btn btn-success pull-right" ng-click="addChairClicked()">Add Chair</button>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="chair in favoriteChairs">
-                            <td><a ng-click="chairSelectedFavorite($index)">{{chair.name}}</a></td>
-                            <td>{{chair.description}}</td>
-                            <td>{{chair.picture}}</td>
-                            <td><button ng-click="deleteChairFavoritePressed($index)" data-target="#deleteFavoriteModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button></td>
+                        <tr ng-repeat="myChair in chairs">
+                            <td><a ng-click="navigateToChair(myChair)">{{myChair.name}}</a></td>
+                            <td>{{myChair.description}}</td>
+                            <td><img src="{{myChair.image}}" height="100" /></td>
+                            <td>
+                                <button ng-click="deleteChairPressed($index,myChair)" data-target="#deleteConfirmModalChair" data-toggle="modal" data-chair={{myChair}} class="btn btn-danger pull-right">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                                <button ng-click="editChairPressed(myChair)" data-target="#editChairModal" data-toggle="modal" id="Button1" class="btn btn-primary pull-right">
+                                    <span class="glyphicon-pencil"></span>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-           </div>
+            </div>
+        </div>
 
-        <!-- favorite users-->
-        <div class="page-header container"><h1>Favorite Users</h1></div>
+
+
+            <!-- ---------------------------------------------------------- -->
+            <!-- favorite chairs -->
+            <div class="page-header container"><h1>Favorite Chairs</h1></div>
             <div class="container">
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th>Chair</th>
+                            <th>Description</th>
+                            <th>Picture</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="chair in favoriteChairs">
+                            <td><a ng-click="navigateToChair(chair)">{{chair.name}}</a></td>
+                            <td>{{chair.description}}</td>
+                            <td><img src="{{chair.image}}" height="100" /></td>
+                            <td>
+                                <button ng-click="deleteChairFavoritePressed($index)" data-target="#deleteFavoriteModalChair" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- favorite users-->
+            <div class="page-header container"><h1>Favorite Users</h1></div>
+            <div class="container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="user in favoriteUsers">
-                            <td><a ng-click="userSelected($index)">{{user.firstName}}</a></td>
+                            <td><a ng-click="userSelected(user)">{{user.username}}</a></td>
+                            <td>{{user.firstName}}</td>
                             <td>{{user.lastName}}</td>
-                            <td><button ng-click="deleteUserPressed($index)" data-target="#deleteConfirmModalUser" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button></td>
+                            <td>
+                                <button ng-click="deleteUserPressed($index)" data-target="#deleteConfirmModalUser" data-toggle="modal" data-chair={{chair}} data-index={{$index}} class="btn btn-danger pull-right">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-           </div>
+            </div>
 
-    </main>
+</main>
 </body>
 </html>

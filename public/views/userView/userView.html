@@ -4,8 +4,33 @@
     <title></title>
 </head>
 <body>
+    {{user}}
+    <div class="page-header container"><h1>{{user.username}} 's Profile</h1></div>
+    <div class="container">
+        <div class="container">
+            <div class="form-group row">
+                <div class="col-sm-2"><label class="field-label">First Name</label></div>
+                <div class="col-md-10">{{user.firstName}}</div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2"><label class="field-label">Last Name</label></div>
+                <div class="col-md-10">{{user.lastName}}</div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2"><label class="field-label">Email</label></div>
+                <div class="col-md-10">{{user.email}}</div>
+            </div>
+        </div>
+    </div>
+
      <!-- My chairs -->
-        <div class="page-header container"><h1>{{user.firstName}} 's Chairs</h1></div>
+        <div class="page-header container">
+            <button data-target="#addToFavoriteConfirmModal" data-toggle="modal" class="btn btn-warning">
+                <span class="glyphicon glyphicon-star"></span>
+                Favorite This User
+            </button>
+            <h1>{{user.firstName}} 's Chairs</h1>
+        </div>
         <div class="container">
             <table class="table table-striped">
                 <thead>
@@ -16,10 +41,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="chair in user.chairs">
-                        <td><a ng-click="chairSelectedMyChair($index)">{{chair.name}}</a></td>
+                    <tr ng-repeat="chair in chairs">
+                        <td><a ng-click="navigateToChair(chair)">{{chair.name}}</a></td>
                         <td>{{chair.description}}</td>
-                        <td>{{chair.picture}}</td>
+                        <td><img src="{{chair.image}}" height="100" /></td>
                     </tr>
                 </tbody>
             </table>
@@ -37,10 +62,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="chair in user.favoriteChairs">
-                            <td><a ng-click="chairSelectedFavorite($index)">{{chair.name}}</a></td>
+                        <tr ng-repeat="chair in favoriteChairs">
+                            <td><a ng-click="navigateToChair(chair)">{{chair.name}}</a></td>
                             <td>{{chair.description}}</td>
-                            <td>{{chair.picture}}</td>
+                            <td><img src="{{chair.image}}" height="100" /></td>
                         </tr>
                     </tbody>
                 </table>
@@ -64,6 +89,25 @@
                     </tbody>
                 </table>
            </div>
+
+    <!-- add to favs confirm modal chairs-->
+    <div id="addToFavoriteConfirmModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add to favorites?</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Press Yes to add this user to your favorites, press No to cancel</p>
+                </div>
+                <div class="modal-footer">
+                    <button ng-click="favoriteUser()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

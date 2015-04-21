@@ -27,8 +27,12 @@ var UserSchema = new mongoose.Schema({
     email: String,
     firstName: String,
     lastName: String,
+    role: String,
     favoriteChairs: [String],
-    favoriteUsers: [String]
+    favoriteUsers: [String],
+    chairs: [String],
+    chairToView: String,
+    userToView: String
 });
 
 var ChairSchema = new mongoose.Schema({
@@ -45,8 +49,8 @@ var CommentSchema = new mongoose.Schema({
 });
 
 var UserModel = mongoose.model("UserModel", UserSchema);
-var ChairModel = mongoose.model("ChairModel", UserSchema);
-var CommentModel = mongoose.model("CommentModel", UserSchema);
+var ChairModel = mongoose.model("ChairModel", ChairSchema);
+var CommentModel = mongoose.model("CommentModel", CommentSchema);
 
 //login
 passport.use(new LocalStrategy(
@@ -65,7 +69,9 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (user, done) {
-    done(null, user);
+    UserModel.findById(user._id, function (err, user) {
+        done(err, user);
+    });
 });
 
 app.post('/login', passport.authenticate('local'), function (req, res) {
@@ -100,9 +106,9 @@ app.post('/logout', function (req, res) {
     res.send(200);
 });
 
-
-
-
+app.get('/syncRequest', function (req, res) {
+    res.send(200);
+});
 
 app.get('/comment/:id', function (req, res) {
     CommentModel.findById(req.params.id, function (err, comment) {
@@ -110,38 +116,31 @@ app.get('/comment/:id', function (req, res) {
     });
 });
 
-
-
 app.post('/comment', function (req, res) {
     var newComment = new CommentModel(req.body);
     newComment.save(function (err, comment) {
         res.json(comment);
     });
 })
-///////////////////////////////
 
-var chair1 = { picture: "pic", name: "throne", description: "Sit here if you da king" };
-var chair2 = { picture: "pic", name: "stool", description: "Sit here if you da fool" };
-var chair3 = { picture: "pic", name: "toadstool", description: "Sit here if you a toad" };
-var chair4 = { picture: "pic", name: "stoolToad", description: "poop here if you a toad" };
-var chair5 = { picture: "pic", name: "hovel", description: "squat here if you toadless" };
-var chair6 = { picture: "pic", name: "bed", description: "lie here if you tired" };
-
-var user1FavoriteChairs = [chair1, chair2, chair3];
-
-var user3 = { firstName: "Johnny3", lastName: "Doey3", email: "3jdoe@chariMecca.com", password: "howdy3", favoriteChairs: [chair1], chairs:[chair5, chair6]};
-var user2 = { firstName: "Johnny", lastName: "Doey", email: "jdoe@chariMecca.com", password: "howdy2", favoriteChairs: [chair1, chair2], favoriteUsers: [user3], chairs: [chair4] };
-var user1 = { firstName: "John", lastName: "Doe", email: "jdoe@chariMecca.com", password: "howdy", favoriteChairs: user1FavoriteChairs, favoriteUsers: [user2, user3], chairs: [chair1, chair2, chair3] };
-
-var users = [user1, user2, user3];
-var chairs = [chair1, chair2, chair3];
-
-    
+app.delete('/comment/:id', function (req, res) {
+    var id = req.params.id;
+    CommentModel.remove({ _id: id }, function (err, count) {
+        res.json(count);
+    });
+});
 ///////////////////Chair stuff
 
 app.get('/allChairs', function (req, res) {
     ChairModel.find(function (err, chairs) {
         res.json(chairs);
+    });
+});
+
+app.post('/chair', function (req, res) {
+    var newChair = new ChairModel(req.body);
+    newChair.save(function (err, chair) {
+        res.json(chair);
     });
 });
 
@@ -160,31 +159,13 @@ app.put("/updateChair/:id", function (req, res) {
         });
     });
 });
-//// ^^data base
-////////////////////////////////////////
-app.get('/chair', function (req, res) {
-    res.json(chairs);
-});
 
-app.delete('/chair/:index', function (req, res) {
-    var index = req.params['index'];
-    chairs.splice(index, 1);
-    res.json(chairs);
+app.delete('/chair/:id', function (req, res) {
+    var id = req.params.id;
+    ChairModel.remove({ _id: id }, function (err, count) {
+        res.json(count);
+    });
 });
-
-app.post('/chair', function (req, res) {
-    var newChair = req.body;
-    chairs.push(newChair);
-    res.json(chairs);
-});
-
-app.put('/chair/:index', function (req, res) {
-    var index = req.params['index'];
-    var updatedChair = req.body;
-    chairs[index] = updatedChair;
-    res.json(chairs);
-});
-
 /////////////////////User stuff
 
 app.put("/updateUser/:id", function (req, res) {
@@ -205,29 +186,13 @@ app.get('/user/:id', function (req, res) {
 });
 
 /////database ^^
-app.get('/user', function (req, res) {
-    res.json(users);
-});
-
-
-
+/*
 app.delete('/user/:index', function (req, res) {
     var index = req.params['index'];
     users.splice(index, 1);
     res.json(users);
 });
-
-app.post('/user', function (req, res) {
-    var newUser = req.body;
-    users.push(newUser);
-    res.json(users);
-});
-
-app.get('/', function (req, res) {
-    res.sendfile('./public/views/profile');
-
-});
-
+*/
 
 var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;

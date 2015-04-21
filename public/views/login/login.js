@@ -1,8 +1,7 @@
 ﻿app.controller("LoginCtrl", function ($scope, $http, $rootScope, $location) {
     $scope.login = function (user) {
-        console.log(user);
-        $http.post('/login', user).success(function (response) {
-            $rootScope.currentUser = response;
+        $http.post('/login', user).success(function (user) {
+            $rootScope.currentUser = user;
             $location.url("/profile");
         });
     };

@@ -7,24 +7,28 @@
     });
 
     //chair selected
-    $scope.chairSelected = function (index) {
-        $rootScope.currentChair = $scope.chairs[index];
+    $scope.chairSelected = function (chair) {
+        $rootScope.currentUser.chairToView = chair._id;
+        $http.put("/updateUser/" + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+            $rootScope.currentUser = user;
+        });
         $location.url('/chair');
     }
 
 
     /////////////////// ADD CHAIR TO FAVORITES
     //$scope.selectedFavoriteIndex = -1;
+    var selectedID = -1;
     $scope.favoriteChairPressed = function (id) {
-        $scope.selectedID = id;
+        selectedID = id;
         console.log(id);
     }
 
     $scope.favoriteChair = function () {
-        $scope.signedInUser.favoriteChairs.push($scope.selectedID);
+        $rootScope.currentUser.favoriteChairs.push(selectedID);
 
-        $http.put('/updateUser/' + $scope.signedInUser._id, $scope.signedInUser).success(function (user) {
-            $scope.currentUser = user;
+        $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+            $rootScope.currentUser = user;
         });
         /*
         //update user

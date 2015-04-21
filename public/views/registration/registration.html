@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Registration</h1>
-
+    {{currentUser}}
     <form>
         <div class="form-group">
             <label for="firstName">First Name *</label>
@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter Email Address" ng-model="user.email">
+            <input type="text" class="form-control" id="email" placeholder="Enter Email Address" ng-model="user.email">
         </div>
         <div class="form-group">
             <label for="username">Username *</label>

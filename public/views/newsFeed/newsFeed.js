@@ -18,17 +18,19 @@
 
     /////////////////// ADD CHAIR TO FAVORITES
     //$scope.selectedFavoriteIndex = -1;
-    var selectedID = -1;
-    $scope.favoriteChairPressed = function (id) {
-        selectedID = id;
-        console.log(id);
+    var selectedChair = null;
+    $scope.favoriteChairPressed = function (chair) {
+        selectedChair = chair;
     }
 
     $scope.favoriteChair = function () {
-        $rootScope.currentUser.favoriteChairs.push(selectedID);
-
+        $rootScope.currentUser.favoriteChairs.push(selectedChair._id);
+        selectedChair.usersWhoFavorited.push($rootScope.currentUser._id);
         $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
             $rootScope.currentUser = user;
+        });
+        $http.put('/updateChair/' + selectedChair._id, selectedChair).success(function (user) {
+
         });
         /*
         //update user

@@ -1,9 +1,9 @@
 ﻿app.controller("chairController", function ($scope, $http, $rootScope, $location) {
-
+    /*
     $http.get("/syncRequest").success(function (response) {
         
     });
-
+    */
     var createCommentTable = function () {
         var commentIDs = $scope.chair.comments;
         $scope.comments = [];
@@ -19,6 +19,16 @@
                 $http.get("/user/" + comment.user).success(function (user) {
                     $scope.users.push(user);
                 });
+            });
+        }
+    }
+
+    var createFavoriteUserPanel = function () {
+        var userIDs = $scope.chair.usersWhoFavorited;
+        $scope.favoriteUsers = [];
+        for (i = 0; i < userIDs.length; i++) {
+            $http.get("/user/" + userIDs[i]).success(function (user) {
+                $scope.favoriteUsers.push(user);
             });
         }
     }
@@ -83,5 +93,16 @@
     $scope.removeCommentCancelled = function () {
         selectedDeleteIndex = -1;
         selectedDeleteComment = null;
+    }
+
+    $scope.favoriteChair = function () {
+        $rootScope.currentUser.favoriteChairs.push($scope.chair._id);
+        $scope.chair.usersWhoFavorited.push($rootScope.currentUser._id);
+        $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+            $rootScope.currentUser = user;
+        });
+        $http.put('/updateChair/' + $scope.chair._id, $scope.chair).success(function (user) {
+            createFavoriteUserPanel();
+        });
     }
 });

@@ -86,3 +86,58 @@ app.controller("NavCtrl", function ($rootScope, $scope, $http, $location) {
         });
     }
 });
+
+app.factory('DatabaseService', function ($http) {
+    var getUser = function (userID, callback) {
+        $http.get("/user/" + userID).success(callback);
+    }
+
+    var updateUser = function (user, callback) {
+        $http.put("/updateUser/" + user._id, user).success(callback);
+    }
+
+    var getAllChairs = function (callback) {
+        $http.get("/allChairs").success(callback);
+    }
+
+    var addChair = function (chair, callback) {
+        $http.post("/chair", chair).success(callback);
+    }
+
+    var getChair = function (chairID, callback) {
+        $http.get("/chair/" + chairID).success(callback);
+    }
+
+    var updateChair = function (chair, callback) {
+        $http.put("/updateChair/" + chair._id, chair).success(callback);
+    }
+
+    var deleteChair = function (chairID, callback) {
+        $http.delete("/chair/" + chairID).success(callback);
+    }
+
+    var getComment = function (commentID, callback) {
+        $http.get("/comment/" + commentID).success(callback);
+    }
+
+    var addComment = function (comment, callback) {
+        $http.post("/comment", comment).success(callback);
+    }
+
+    var deleteComment = function (commentID, callback) {
+        $http.delete("/comment/" + commentID).success(callback);
+    }
+
+    return {
+        getUser: getUser,
+        updateUser: updateUser,
+        getAllChairs: getAllChairs,
+        addChair: addChair,
+        getChair: getChair,
+        updateChair: updateChair,
+        deleteChair: deleteChair,
+        getComment: getComment,
+        addComment: addComment,
+        deleteComment: deleteComment
+    }
+});

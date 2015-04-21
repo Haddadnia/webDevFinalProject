@@ -1,14 +1,8 @@
-﻿app.controller("profileController", function ($scope, $http, $rootScope, $location, $window) {
+﻿app.controller("profileController", function ($scope, $http, $rootScope, $location, DatabaseService) {
     //$scope.signedInUser = $rootScope.currentUser;
 
     var createMyChairsTable = function () {
-        $scope.chairs = [];
-        var chairIDs = $rootScope.currentUser.chairs;
-        for (i = 0; i < chairIDs.length ; i++) {
-            $http.get("/chair/" + chairIDs[i]).success(function (chair) {
-                $scope.chairs.push(chair);
-            });
-        }
+        $scope.myChairs = $rootScope.currentUser.chairs;
     }
 
     var createFavoriteChairsTable = function () {
@@ -227,31 +221,53 @@
     };
 
     $scope.addChair = function (chair) {
-        console.log(chair);
-
-
-        //chair._id = "551235552262";
-        //$rootScope.currentUser.chairs.push(chair._id);
-        console.log($rootScope.currentUser);
-
-
-        $http.post("/chair", chair).success(function (chair) {
-            console.log(" chair");
-            console.log(chair);
-
-
-
-
+        console.log("adding chair")
+        DatabaseService.addChair(chair, function (chair) {
+            console.log("chair added")
+            $rootScope.currentUser.chairs.push(chair);
+            //$rootScope.currentUser.chairs.push(chair._id);
+            /*
+            $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+                $rootScope.currentUser = user;
+                createMyChairsTable();
+                $scope.tempChair = null;
+            });
+            */
+            console.log("updating user")
+            DatabaseService.updateUser($rootScope.currentUser, function (user) {
+                console.log("user updated")
+                $rootScope.currentUser = user;
+                createMyChairsTable();
+                $scope.tempChair = null;
+            });
         });
-
-        $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
-
+        /*
+        console.log("updating user")
+        DatabaseService.updateUser($rootScope.currentUser, function (user) {
+            console.log("user updated")
             $rootScope.currentUser = user;
             createMyChairsTable();
             $scope.tempChair = null;
         });
-
-
+        */
+        /*
+        $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+            $rootScope.currentUser = user;
+            createMyChairsTable();
+            $scope.tempChair = null;
+        });
+        */
+        /*
+        $http.post("/chair", chair).success(function (chair) {
+            $rootScope.currentUser.chairs.push(chair._id);
+            $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+                $rootScope.currentUser = user;
+                createMyChairsTable();
+                $scope.tempChair = null;
+            });
+        });
+        */
     };
+
 
 });

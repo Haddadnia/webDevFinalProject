@@ -28,24 +28,24 @@ var UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     role: String,
-    favoriteChairs: [String],
-    favoriteUsers: [String],
-    chairs: [String],
-    chairToView: String,
-    userToView: String
+    favoriteChairs: [],
+    favoriteUsers: [],
+    chairs: [],
+    chairToView: [],
+    userToView: []
 });
 
 var ChairSchema = new mongoose.Schema({
     name: String,
     image: String,
     description: String,
-    usersWhoFavorited: [String],
-    comments: [String]
+    usersWhoFavorited: [],
+    comments: []
 });
 
 var CommentSchema = new mongoose.Schema({
     text: String,
-    user: String
+    user: []
 });
 
 var UserModel = mongoose.model("UserModel", UserSchema);
@@ -170,13 +170,8 @@ app.delete('/chair/:id', function (req, res) {
 
 app.put("/updateUser/:id", function (req, res) {
     UserModel.findById(req.params.id, function (err, user) {
-        console.log("11111111");
-        console.log(user);
         user.update(req.body, function (err, count) {
             UserModel.findById(req.params.id, function (err, user) {
-                console.log("2222222");
-                console.log(user);
-
                 res.json(user);
             });
         });

@@ -6,12 +6,26 @@
 <body>
     {{currentUser}}
     <div class="container">
-        <img src="{{chair.image}}" class="img-responsive center-block" style="border:1px solid #021a40" alt="Responsive image">
-        <h1 class="text-center">{{chair.name}}</h1>
-        <p class="text-center">Description: {{chair.description}}</p>
+        <div class="col-sm-6">
+            <img src="{{chair.image}}" class="img-responsive center-block" style="border:1px solid #021a40" alt="Responsive image">
+            <h1 class="text-center">{{chair.name}}</h1>
+            <p class="text-center">Description: {{chair.description}}</p>
+        </div>
+        <div class="panel panel-primary col-sm-6">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Users Who Favorited This Chair</div>
+            <!-- List group -->
+            <ul class="list-group">
+                <li ng-repeat="user in favoriteUsers" class="list-group-item">{{user.username}}</li>
+            </ul>
+        </div>
     </div>
-
+    
     <div class="container">
+        <button data-target="#addToFavoriteConfirmModal" data-toggle="modal" class="btn btn-warning">
+            <span class="glyphicon glyphicon-star"></span>
+            Favorite This Chair
+        </button>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -60,6 +74,25 @@
                 <div class="modal-footer">
                     <button ng-click="removeComment()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="removeCommentCancelled()">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- add to favs confirm modal chairs-->
+    <div id="addToFavoriteConfirmModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add to favorites?</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Press Yes to add this chair to your favorites, press No to cancel</p>
+                </div>
+                <div class="modal-footer">
+                    <button ng-click="favoriteChair()" type="button" class="btn btn-warning" data-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>

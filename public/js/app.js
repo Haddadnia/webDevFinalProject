@@ -88,7 +88,7 @@ app.controller("NavCtrl", function ($rootScope, $scope, $http, $location) {
 });
 
 app.factory('DatabaseService', function ($http) {
-    console.log("in factory");
+    
     var getUser = function (userID, callback) {
         $http.get("/user/" + userID).success(callback);
     }

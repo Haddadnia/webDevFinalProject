@@ -228,19 +228,27 @@
 
     $scope.addChair = function (chair) {
         console.log(chair);
+
+
+        
+
         $http.post("/chair", chair).success(function (chair) {
             console.log(chair._id);
-            
-            $rootScope.currentUser.chairs.push(chair._id);
-
             console.log($rootScope.currentUser);
-            $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+            $rootScope.currentUser.chairs.push(chair._id);
+            addChairUpdateUser();
 
-                console.log(user);
-                $rootScope.currentUser = user;
-                createMyChairsTable();
-                $scope.tempChair = null;
-            });
         });
+
+
     };
+
+    var addChairUpdateUser = function () {
+        $http.put('/updateUser/' + $rootScope.currentUser._id, $rootScope.currentUser).success(function (user) {
+
+            $rootScope.currentUser = user;
+            createMyChairsTable();
+            $scope.tempChair = null;
+        });
+    }
 });

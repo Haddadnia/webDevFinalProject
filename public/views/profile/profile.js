@@ -21,7 +21,14 @@
         var favoriteChairIDs = $rootScope.currentUser.favoriteChairs;
         for (i = 0; i < favoriteChairIDs.length ; i++) {
             DatabaseService.getChair(favoriteChairIDs[i], function (chair) {
-                $scope.favoriteChairs.push(chair);
+                if (chair !== null)
+                {
+                    $scope.favoriteChairs.push(chair);
+                }
+                else {
+                    favoriteChairIDs.splice(i, 1);
+                    i--;
+                }
             });
             /*
             $http.get("/chair/" + favoriteChairIDs[i]).success(function (chair) {
@@ -97,6 +104,7 @@
             DatabaseService.updateUser($rootScope.currentUser, function (user) {
                 $rootScope.currentUser = user;
                 createMyChairsTable();
+                createFavoriteChairsTable();
             });
             DatabaseService.deleteChair(selectedDeleteChair._id, function (response) {
                 

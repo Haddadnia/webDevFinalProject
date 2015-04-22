@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-//var textSearch = require('mongoose-text-search');
 // default to a 'localhost' configuration:
 var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/test';
 // if OPENSHIFT env variables are present, use the available connection info:
@@ -232,14 +231,12 @@ app.get('/user/:id', function (req, res) {
 
 app.get('/searchUsers/:string', function (req, res) {
     UserModel.find({ $text: { $search: req.params.string } }, function (err, users) {
-        console.log(users);
         res.json(users);
     });
 });
 
 app.get('/searchChairs/:string', function (req, res) {
     ChairModel.find({ $text: { $search: req.params.string } }, function (err, chairs) {
-        console.log(chairs);
         res.json(chairs);
     });
 });

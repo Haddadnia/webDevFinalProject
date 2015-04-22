@@ -2,13 +2,11 @@
 
     DatabaseService.searchUsers($rootScope.currentUser.searchText, function (users) {
         $scope.users = users;
-        console.log(users);
     });
 
     
     DatabaseService.searchChairs($rootScope.currentUser.searchText, function (chairs) {
         $scope.chairs = chairs;
-        console.log(chairs);
     });
 
     $scope.navigateToChair = function (chair) {

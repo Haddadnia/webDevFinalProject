@@ -167,12 +167,10 @@ app.factory('DatabaseService', function ($http) {
     }
 
     var searchUsers = function (text, callback) {
-        console.log(text);
         $http.get('/searchUsers/' + text).success(callback);
     }
 
     var searchChairs = function (text, callback) {
-        console.log(text);
         $http.get('/searchChairs/' + text).success(callback);
     }
 

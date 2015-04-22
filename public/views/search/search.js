@@ -8,6 +8,7 @@
     
     DatabaseService.searchChairs($rootScope.currentUser.searchText, function (chairs) {
         $scope.chairs = chairs;
+        console.log(chairs);
     });
 
     $scope.navigateToChair = function (chair) {

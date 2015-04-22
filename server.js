@@ -230,12 +230,14 @@ app.get('/user/:id', function (req, res) {
 
 app.get('/searchUsers/:string', function (req, res) {
     UserModel.find({ $text: { $search: req.params.string } }, function (err, users) {
+        console.log(users);
         res.json(users);
     });
 });
 
 app.get('/searchChairs/:string', function (req, res) {
     ChairModel.find({ $text: { $search: req.params.string } }, function (err, chairs) {
+        console.log(chairs);
         res.json(chairs);
     });
 });

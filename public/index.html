@@ -14,6 +14,7 @@
     <script src="views/newsFeed/newsFeed.js"></script>
     <script src="views/chair/chair.js"></script>
     <script src="views/userView/userView.js"></script>
+    <script src="views/search/search.js"></script>
     <style>
         #routingView {
             padding:70px;
@@ -37,6 +38,13 @@
                     <ul class="nav navbar-nav">
                         <li><a href="#profile" ng-show="currentUser">Profile</a></li>
                         <li><a href="#feed">News Feed</a></li>
+                        <li ng-show="currentUser"><a href="" ng-click="showSearchBar()"><img src="https://www.grantforward.com/public/img/search_splash.png" height="20"/>Search</a></li>
+                        <li ng-show="searchBarShow == true">
+                            <form class="form-inline">
+                                <input type="text" class="form-control" style="margin-top: 7px" placeholder="Search" ng-model="searchSubject">
+                                <button ng-hide="true" type="submit" class="btn btn-primary" ng-click="search(searchSubject)">Search</button>
+                            </form>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#register" ng-show="!currentUser">Register</a></li>

@@ -38,6 +38,13 @@ app.config(function ($routeProvider, $httpProvider) {
             },
             controller: 'userViewController'
         })
+        .when('/search', {
+            templateUrl: 'views/search/search.html',
+            resolve: {
+                getLoggedInUser: getLoggedInUser
+            },
+            controller: 'searchCtrl'
+        })
         .otherwise({
             redirectTo: '/feed'
         });
@@ -87,12 +94,29 @@ var getLoggedInUser = function ($q, $timeout, $http, $location, $rootScope, Data
     return deferred.promise;
 };
 
-app.controller("NavCtrl", function ($rootScope, $scope, $http, $location) {
+app.controller("NavCtrl", function ($route, $rootScope, $scope, $http, $location) {
     $scope.logout = function () {
         $http.post("/logout").success(function () {
             $rootScope.currentUser = null;
             $location.url("/feed");
         });
+    }
+
+    $scope.showSearchBar = function () {
+        if($scope.searchBarShow == true)
+        {
+            $scope.searchBarShow = false;
+        } else {
+            $scope.searchBarShow = true;
+        }
+        
+    }
+    $scope.search = function (searchSubject) {
+        $rootScope.currentUser.searchText = searchSubject;
+        $location.url("/search");
+        $route.reload();
+        $scope.showSearchBar();
+        $scope.searchSubject = ""
     }
 });
 
@@ -142,6 +166,14 @@ app.factory('DatabaseService', function ($http) {
         $http.get('/loggedin').success(callback);
     }
 
+    var searchUsers = function (text, callback) {
+        $http.get('/searchUsers/' + text).success(callback);
+    }
+
+    var searchChairs = function (text, callback) {
+        $http.get('/searchChairs/' + text).success(callback);
+    }
+
     return {
         getUser: getUser,
         updateUser: updateUser,
@@ -153,6 +185,8 @@ app.factory('DatabaseService', function ($http) {
         getComment: getComment,
         addComment: addComment,
         deleteComment: deleteComment,
-        loggedIn: loggedIn
+        loggedIn: loggedIn,
+        searchUsers: searchUsers,
+        searchChairs: searchChairs
     }
 });

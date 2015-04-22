@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+//var textSearch = require('mongoose-text-search');
 // default to a 'localhost' configuration:
 var connectionString = 'mongodb://localhost/test';
 // if OPENSHIFT env variables are present, use the available connection info:
@@ -41,7 +42,8 @@ var UserSchema = new mongoose.Schema({
     favoriteUsers: [String],
     chairs: [String],
     chairToView: String,
-    userToView: String
+    userToView: String,
+    searchText: String
 });
 
 var ChairSchema = new mongoose.Schema({
@@ -55,6 +57,18 @@ var CommentSchema = new mongoose.Schema({
     text: String,
     userID: String,
     username: String
+});
+
+UserSchema.index({
+    username: "text",
+    firstName: "text",
+    lastName: "text",
+    email: "text"
+});
+
+ChairSchema.index({
+    name: "text",
+    description: "text"
 });
 
 var UserModel = mongoose.model("UserModel", UserSchema);
@@ -212,6 +226,18 @@ app.get('/user/:id', function (req, res) {
         res.json(user);
     });
 
+});
+
+app.get('/searchUsers/:string', function (req, res) {
+    UserModel.find({ $text: { $search: req.params.string } }, function (err, users) {
+        res.json(users);
+    });
+});
+
+app.get('/searchChairs/:string', function (req, res) {
+    ChairModel.find({ $text: { $search: req.params.string } }, function (err, chairs) {
+        res.json(chairs);
+    });
 });
 
 /////database ^^

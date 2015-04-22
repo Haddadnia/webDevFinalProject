@@ -78,6 +78,7 @@
             });
         });
         */
+        $('#commentEntry').val("").change();
     }
 
     $scope.admin = "admin";

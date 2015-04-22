@@ -20,7 +20,7 @@
     }
 
     $scope.navigateToUser = function (user) {
-        $rootScope.currentUser.chairToView = user._id;
+        $rootScope.currentUser.userToView = user._id;
 
         DatabaseService.updateUser($rootScope.currentUser, function (user) {
             $rootScope.currentUser = user;
